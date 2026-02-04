@@ -1,9 +1,6 @@
 from flask import Flask
-from flask_migrate import upgrade
-
 from .config import DevConfig
 from .extensions import db, migrate, login_manager, csrf
-
 
 def create_app():
    app = Flask(__name__, template_folder="templates", static_folder="static")
@@ -14,10 +11,6 @@ def create_app():
    migrate.init_app(app, db)
    login_manager.init_app(app)
    csrf.init_app(app)
-
-   # Run migrations automatically (Render free: pas de shell)
-   with app.app_context():
-       upgrade()
 
    login_manager.login_view = "auth.login"
 

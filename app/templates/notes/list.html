@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Mes notes</h2>
+
+<a href="{{ url_for('notes.create_note') }}" class="btn btn-primary mb-3">
+   Nouvelle note
+</a>
+
+<div class="row">
+   {% for note in notes %}
+   <div class="col-md-6 mb-3">
+       <div class="card shadow-sm">
+           <div class="card-body">
+               <p class="card-text">{{ note.content }}</p>
+
+               <div class="d-flex justify-content-end gap-2">
+                   <a href="{{ url_for('notes.edit_note', note_id=note.id) }}" class="btn btn-sm btn-warning">
+                       Modifier
+                   </a>
+
+                   <form method="POST" action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+                       <button class="btn btn-sm btn-danger">
+                           Supprimer
+                       </button>
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+   {% endfor %}
+</div>
+{% endblock %}

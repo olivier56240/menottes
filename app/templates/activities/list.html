@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="mb-4">Liste des activités</h1>
+
+<a href="{{ url_for('activities.create_activity') }}" class="btn btn-primary mb-3">
+   Créer une activité
+</a>
+
+{% if activities %}
+   <ul class="list-group">
+       {% for activity in activities %}
+           <li class="list-group-item">
+               {{ activity.title }}
+           </li>
+       {% endfor %}
+   </ul>
+{% else %}
+   <div class="alert alert-info">
+       Aucune activité pour le moment.
+   </div>
+{% endif %}
+
+{% endblock %}

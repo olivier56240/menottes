@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Nouvelle note{% endblock %}
+
+{% block content %}
+<h1 class="h3 mb-3">Nouvelle note</h1>
+
+<form method="POST">
+ {{ form.hidden_tag() }}
+
+ <div class="mb-3">
+   {{ form.title.label(class="form-label") }}
+   {{ form.title(class="form-control") }}
+   {% for err in form.title.errors %}
+     <div class="text-danger small">{{ err }}</div>
+   {% endfor %}
+ </div>
+
+ <div class="mb-3">
+   {{ form.content.label(class="form-label") }}
+   {{ form.content(class="form-control", rows="6") }}
+   {% for err in form.content.errors %}
+     <div class="text-danger small">{{ err }}</div>
+   {% endfor %}
+ </div>
+
+ <button class="btn btn-primary" type="submit">Enregistrer</button>
+ <a class="btn btn-link" href="{{ url_for('notes.list_notes') }}">Retour</a>
+</form>
+{% endblock %}

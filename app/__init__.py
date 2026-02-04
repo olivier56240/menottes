@@ -1,12 +1,21 @@
-
+import os
 from flask import Flask
-from .config import DevConfig
+from .config import DevConfig, BASE_DIR
 from .extensions import db, migrate, login_manager, csrf
-
 
 def create_app():
    app = Flask(__name__, template_folder="templates", static_folder="static")
    app.config.from_object(DevConfig)
+
+   # ✅ FORCE la DB ici (Render / prod)
+   db_url = os.environ.get("DATABASE_URL")
+   if db_url and db_url.startswith("postgres://"):
+       db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+   if db_url:
+       app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+   else:
+       app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "instance/local.db")
 
    db.init_app(app)
    migrate.init_app(app, db)
@@ -15,7 +24,7 @@ def create_app():
 
    login_manager.login_view = "auth.login"
 
-   # Blueprints
+   # blueprints...
    from .auth import bp as auth_bp
    from .notes import bp as notes_bp
    from .activities import bp as activities_bp

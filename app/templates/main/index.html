@@ -1,17 +1,31 @@
-<!doctype html>
-<html lang="fr">
-<head>
- <meta charset="utf-8">
- <title>Accueil</title>
-</head>
-<body>
- <h1>Accueil MyNotes</h1>
+{% extends "base.html" %}
+{% block content %}
 
- <p>
-   <a href="/auth/register">Register</a> |
-   <a href="/auth/login">Login</a> |
-   <a href="/notes">Notes</a> |
-   <a href="/activities">Activités</a>
- </p>
-</body>
-</html>
+<section class="hero">
+ <div class="hero-overlay"></div>
+
+ <div class="hero-content">
+   <h1 class="hero-title">RassoRide</h1>
+   <p class="hero-subtitle">
+     Trouve des rassemblements auto/moto près de chez toi, et rejoins la communauté.
+   </p>
+
+   <div class="hero-actions">
+     <a href="{{ url_for('notes.list_notes') }}" class="btn btn-primary btn-lg">
+       Voir les rassemblements
+     </a>
+
+     {% if current_user.is_authenticated %}
+       <a href="{{ url_for('notes.create_note') }}" class="btn btn-outline-light btn-lg">
+         Créer un rassemblement
+       </a>
+     {% else %}
+       <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg">
+         S’inscrire
+       </a>
+     {% endif %}
+   </div>
+ </div>
+</section>
+
+{% endblock %}

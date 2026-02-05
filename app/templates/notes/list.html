@@ -1,33 +1,32 @@
-
 {% extends "base.html" %}
 {% block content %}
 
 <h2 class="mb-4">Rassemblements à venir</h2>
 
 <a href="{{ url_for('notes.create_note') }}" class="btn btn-primary mb-4">
-   ➕ Créer un rassemblement
+  ➕ Créer un rassemblement
 </a>
 
 <div class="row">
-   {% for note in notes %}
-   <div class="row">
-   {% for note in notes %}
-   <div class="col-md-4 mb-4">
-       <div class="card p-3 shadow bg-dark text-white border-0 h-100">
-           <h4 class="fw-bold">{{ note.title }}</h4>
-           <p>{{ note.content[:120] }}...</p>
+  {% for note in notes %}
+  <div class="col-md-4 mb-4">
+      <div class="card p-3 shadow bg-dark text-white border-0 h-100">
+          <h4 class="fw-bold">{{ note.title }}</h4>
+          <p>{{ note.content[:120] }}...</p>
 
-           <div class="d-flex justify-content-between mt-3">
-               <a href="{{ url_for('notes.edit_note', note_id=note.id) }}"
-                  class="btn btn-sm btn-warning">Modifier</a>
+          <div class="d-flex justify-content-between mt-3">
+              <a href="{{ url_for('notes.edit_note', note_id=note.id) }}"
+                 class="btn btn-sm btn-warning">Modifier</a>
 
-               <form method="POST"
-                     action="{{ url_for('notes.delete_note', note_id=note.id) }}">
-                   <button class="btn btn-sm btn-danger">Supprimer</button>
-               </form>
-           </div>
-       </div>
-   </div>
-   {% endfor %}
+              <form method="POST"
+                    action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="btn btn-sm btn-danger">Supprimer</button>
+              </form>
+          </div>
+      </div>
+  </div>
+  {% endfor %}
 </div>
+
 {% endblock %}

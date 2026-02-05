@@ -12,33 +12,30 @@
    Aucun rassemblement pour le moment.
  </div>
 {% else %}
+<div class="grid">
+ {% for note in notes %}
+ <div class="card category-{{ note.category|lower|trim }}"></div>
 
- <div class="row g-4">
-   {% for note in notes %}
-     <div class="col-12 col-md-6 col-lg-4">
-       <div class="card rr-card h-100">
-         <div class="card-body">
-           <h4 class="rr-title mb-2">{{ note.title }}</h4>
+ <div class="card-overlay"></div>
 
-           <p class="rr-desc mb-0">
-             {{ note.content[:120] }}{% if note.content|length > 120 %}...{% endif %}
-           </p>
-         </div>
+ <div class="card-content">
+   <h3>{{ note.title }}</h3>
+   <p>{{ note.content }}</p>
 
-         <div class="card-footer rr-footer d-flex justify-content-between gap-2">
-           <a href="{{ url_for('notes.edit_note', note_id=note.id) }}" class="btn btn-warning btn-sm">
-             Modifier
-           </a>
+   <div class="actions">
+     <a href="{{ url_for('notes.edit_note', note_id=note.id) }}"
+        class="btn btn-warning">Modifier</a>
 
-           <form method="POST" action="{{ url_for('notes.delete_note', note_id=note.id) }}" class="m-0">
-             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-             <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-           </form>
-         </div>
-       </div>
-     </div>
-   {% endfor %}
+     <a href="{{ url_for('notes.delete_note', note_id=note.id) }}"
+        class="btn btn-danger">Supprimer</a>
+   </div>
  </div>
+
+</div>
+
+ {% endfor %}
+</div>
+ 
 
 {% endif %}
 {% endblock %}

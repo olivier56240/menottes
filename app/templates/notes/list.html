@@ -50,3 +50,52 @@
 
 {% endif %}
 {% endblock %}
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Rassemblements à venir</h2>
+
+<a href="{{ url_for('notes.create_note') }}" class="btn btn-primary mb-4">
+ ➕ Créer un rassemblement
+</a>
+
+{% if notes|length == 0 %}
+<div class="alert alert-secondary">
+ Aucun rassemblement pour le moment.
+</div>
+{% else %}
+
+<div class="row g-4">
+{% for note in notes %}
+ <div class="col-12 col-md-6 col-lg-4">
+   <div class="card rr-card h-100">
+     <div class="card-body">
+       <h4 class="rr-title mb-2">{{ note.title }}</h4>
+
+       <p class="rr-desc mb-0">
+         {{ note.content[:120] }}
+         {% if note.content|length > 120 %}...{% endif %}
+       </p>
+     </div>
+
+     <div class="card-footer rr-footer d-flex justify-content-between gap-2">
+       <a href="{{ url_for('notes.edit_note', note_id=note.id) }}"
+          class="btn btn-warning btn-sm">
+         Modifier
+       </a>
+
+       <form method="POST"
+             action="{{ url_for('notes.delete_note', note_id=note.id) }}"
+             class="m-0">
+         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+         <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+       </form>
+
+     </div>
+   </div>
+ </div>
+{% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

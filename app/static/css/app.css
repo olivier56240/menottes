@@ -1,0 +1,27 @@
+.rr-center { display: flex; justify-content: center; }
+.rr-panel {
+ width: 100%;
+ max-width: 720px;
+ background: rgba(30,30,30,0.92);
+ border: 1px solid rgba(255,255,255,0.08);
+ border-radius: 14px;
+ padding: 24px;
+}
+
+.rr-input { background: #f2f2f2; }
+
+.rr-card {
+ background: rgba(30,30,30,0.92);
+ color: #fff;
+ border: 1px solid rgba(255,255,255,0.08);
+ border-radius: 14px;
+ overflow: hidden;
+}
+
+.rr-title { font-weight: 800; font-size: 22px; }
+.rr-desc { opacity: 0.9; }
+
+.rr-footer {
+ background: rgba(0,0,0,0.15);
+ border-top: 1px solid rgba(255,255,255,0.08);
+}

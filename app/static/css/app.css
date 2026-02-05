@@ -159,15 +159,10 @@ h2 {
 }
 
 .category-voiture {
- background-image: url("../img/voiture.jpg");
+ background-image: url("/static/img/voiture.jpg");
 }
-
 .category-moto {
- background-image: url("../img/moto.jpg");
-}
-
-.category-balade {
- background-image: url("../img/balade.jpg");
+ background-image: url("/static/img/moto.jpg");
 }
 
 .card-overlay {

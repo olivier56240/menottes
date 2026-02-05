@@ -1,14 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<div style="text-align:center; margin-top:80px;">
-   <h1>Bienvenue sur MyNotes</h1>
-   <p>Une application simple pour gérer vos notes personnelles en toute sécurité.</p>
 
-   {% if current_user.is_authenticated %}
-       <a href="{{ url_for('notes.list_notes') }}">Accéder à mes notes</a>
-   {% else %}
-       <a href="{{ url_for('auth.login') }}">Se connecter</a> |
-       <a href="{{ url_for('auth.register') }}">Créer un compte</a>
-   {% endif %}
+<div class="text-center mt-5">
+ <h1 class="display-5 mb-3">Bienvenue sur MyNotes</h1>
+ <p class="lead mb-4">
+   Une application simple, sécurisée et moderne pour gérer vos notes personnelles.
+ </p>
+
+ {% if not current_user.is_authenticated %}
+   <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-2">
+     Créer un compte
+   </a>
+   <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary btn-lg">
+     Se connecter
+   </a>
+ {% else %}
+   <a href="{{ url_for('notes.list_notes') }}" class="btn btn-primary btn-lg">
+     Accéder à mes notes
+   </a>
+ {% endif %}
 </div>
+
 {% endblock %}

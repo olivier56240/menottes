@@ -1,55 +1,96 @@
-.rr-center { display: flex; justify-content: center; }
-.rr-panel {
- width: 100%;
- max-width: 720px;
- background: rgba(30,30,30,0.92);
- border: 1px solid rgba(255,255,255,0.08);
- border-radius: 14px;
- padding: 24px;
+/* ===== GLOBAL ===== */
+body {
+   background: radial-gradient(circle at 20% 20%, #1a1a1a, #0b0b0b 60%);
+   color: #fff;
+   font-family: 'Segoe UI', sans-serif;
 }
 
-.rr-input { background: #f2f2f2; }
+/* ===== HERO TITLE ===== */
+h2 {
+   font-weight: 800;
+   font-size: 38px;
+   letter-spacing: 1px;
+   margin-bottom: 30px;
+}
 
+/* ===== CREATE BUTTON ===== */
+.btn-primary {
+   background: linear-gradient(45deg, #ff3c00, #ff7a00);
+   border: none;
+   padding: 12px 22px;
+   font-weight: 700;
+   border-radius: 10px;
+   box-shadow: 0 8px 25px rgba(255, 60, 0, 0.4);
+   transition: 0.3s;
+}
+
+.btn-primary:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 12px 35px rgba(255, 60, 0, 0.6);
+}
+
+/* ===== CARDS ===== */
 .rr-card {
- background: rgba(30,30,30,0.92);
- color: #fff;
- border: 1px solid rgba(255,255,255,0.08);
- border-radius: 14px;
- overflow: hidden;
-}
-
-.rr-title { font-weight: 800; font-size: 22px; }
-.rr-desc { opacity: 0.9; }
-
-.rr-footer {
- background: rgba(0,0,0,0.15);
- border-top: 1px solid rgba(255,255,255,0.08);
-}
-/* ===== NEW CLEAN CARDS ===== */
-
-.note-card {
-   background: #1c1c1c;
-   color: white;
-   border-radius: 12px;
-   padding: 20px;
-   min-height: 230px;
-}
-
-.note-title {
-   font-weight: bold;
-   font-size: 20px;
-   margin-bottom: 10px;
-}
-
-.note-content {
-   color: #ccc;
+   background: linear-gradient(145deg, #1f1f1f, #151515);
+   border-radius: 18px;
    overflow: hidden;
-   text-overflow: ellipsis;
-   white-space: nowrap;
+   border: 1px solid rgba(255,255,255,0.05);
+   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+   transition: 0.3s ease;
 }
 
-.note-actions {
-   display: flex;
-   justify-content: space-between;
-   margin-top: 15px;
+.rr-card:hover {
+   transform: translateY(-6px);
+   box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+}
+
+/* ===== CARD TITLE ===== */
+.rr-title {
+   font-size: 22px;
+   font-weight: 700;
+   color: #ffffff;
+}
+
+/* ===== CARD TEXT ===== */
+.rr-desc {
+   opacity: 0.8;
+   font-size: 15px;
+}
+
+/* ===== FOOTER ===== */
+.rr-footer {
+   background: rgba(0,0,0,0.4);
+   border-top: 1px solid rgba(255,255,255,0.05);
+   padding: 15px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-warning {
+   background: #ffb300;
+   border: none;
+   font-weight: 600;
+   border-radius: 8px;
+}
+
+.btn-danger {
+   background: #ff2e2e;
+   border: none;
+   font-weight: 600;
+   border-radius: 8px;
+}
+
+/* ===== GRID SPACE ===== */
+.row.g-4 > * {
+   margin-bottom: 25px;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+   background: #000;
+   box-shadow: 0 5px 30px rgba(0,0,0,0.8);
+}
+
+/* ===== CONTAINER SPACING ===== */
+.container {
+   margin-top: 60px;
 }

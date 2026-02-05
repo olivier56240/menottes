@@ -7,3 +7,4 @@ class Note(db.Model):
    content = db.Column(db.Text, nullable=False)
    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+   category = db.Column(db.String(50), nullable=False)

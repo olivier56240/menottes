@@ -25,3 +25,31 @@
  background: rgba(0,0,0,0.15);
  border-top: 1px solid rgba(255,255,255,0.08);
 }
+/* ===== NEW CLEAN CARDS ===== */
+
+.note-card {
+   background: #1c1c1c;
+   color: white;
+   border-radius: 12px;
+   padding: 20px;
+   min-height: 230px;
+}
+
+.note-title {
+   font-weight: bold;
+   font-size: 20px;
+   margin-bottom: 10px;
+}
+
+.note-content {
+   color: #ccc;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+}
+
+.note-actions {
+   display: flex;
+   justify-content: space-between;
+   margin-top: 15px;
+}

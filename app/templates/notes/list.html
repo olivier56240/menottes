@@ -33,10 +33,15 @@
        </a>
 
        <form method="POST"
-             action="{{ url_for('notes.delete_note', note_id=note.id) }}">
-         {{ csrf_token() }}
-         <button class="btn btn-danger btn-sm">Supprimer</button>
-       </form>
+     action="{{ url_for('notes.delete_note', note_id=note.id) }}"
+     class="m-0">
+
+   {{ csrf_token() }}
+
+   <button type="submit" class="btn btn-danger btn-sm">
+       Supprimer
+   </button>
+</form>
      </div>
    </div>
  </div>

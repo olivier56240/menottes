@@ -1,9 +1,21 @@
 /* ===== GLOBAL ===== */
 body {
-   background: radial-gradient(circle at 20% 20%, #1a1a1a, #0b0b0b 60%);
-   color: #fff;
-   font-family: 'Segoe UI', sans-serif;
+ background: url("../img/bg.jpg") center / cover fixed no-repeat;
+ color: #fff;
+ font-family: 'Segoe UI', sans-serif;
 }
+
+/* voile sombre pour la lisibilité */
+body::before {
+ content: "";
+ position: fixed;
+ inset: 0;
+ background: rgba(0,0,0,0.65);
+ z-index: -1;
+}
+
+  
+
 
 /* ===== HERO TITLE ===== */
 h2 {
@@ -136,4 +148,22 @@ h2 {
  display: flex;
  gap: 12px;
  flex-wrap: wrap;
+}
+.card {
+ position: relative;
+ height: 220px;
+ border-radius: 16px;
+ overflow: hidden;
+ background-size: cover;
+ background-position: center;
+}
+
+.category-voiture { background-image: url("../img/voiture.jpg"); }
+.category-moto    { background-image: url("../img/moto.jpg"); }
+.category-balade  { background-image: url("../img/balade.jpg"); }
+
+.card-overlay {
+ position: absolute;
+ inset: 0;
+background: rgba(0,0,0,0.55);
 }

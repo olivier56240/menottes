@@ -4,8 +4,9 @@
 {% block content %}
 <h1>Créer un compte</h1>
 
-<form method="post">
+<form method="POST" action="{{ url_for('auth.login') }}">
  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ 
 
  <p>
    {{ form.email.label }}<br>

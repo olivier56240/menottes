@@ -4,8 +4,9 @@
 {% block content %}
 <h1 class="h3 mb-3">Modifier la note</h1>
 
-<form method="POST">
- {{ form.hidden_tag() }}
+<form method="POST" action="{{ url_for('auth.login') }}">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ 
 
  <div class="mb-3">
    {{ form.title.label(class="form-label") }}

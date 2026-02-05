@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="d-flex align-items-center justify-content-between mb-4">
- <h2 class="mb-0">Rassemblements à venir</h2>
+<h2 class="mb-4">Rassemblements à venir</h2>
 
- <a href="{{ url_for('notes.create_note') }}" class="btn btn-primary">
-   ➕ Créer un rassemblement
- </a>
-</div>
+<a href="{{ url_for('notes.create_note') }}" class="btn btn-primary mb-4">
+ ➕ Créer un rassemblement
+</a>
 
 {% if notes|length == 0 %}
  <div class="alert alert-secondary">
@@ -28,19 +26,13 @@
          </div>
 
          <div class="card-footer rr-footer d-flex justify-content-between gap-2">
-           <a href="{{ url_for('notes.edit_note', note_id=note.id) }}"
-              class="btn btn-warning btn-sm">
+           <a href="{{ url_for('notes.edit_note', note_id=note.id) }}" class="btn btn-warning btn-sm">
              Modifier
            </a>
 
-           <form method="POST"
-                 action="{{ url_for('notes.delete_note', note_id=note.id) }}"
-                 class="m-0"
-                 onsubmit="return confirm('Supprimer ce rassemblement ?');">
+           <form method="POST" action="{{ url_for('notes.delete_note', note_id=note.id) }}" class="m-0">
              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-             <button type="submit" class="btn btn-danger btn-sm">
-               Supprimer
-             </button>
+             <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
            </form>
          </div>
        </div>
@@ -49,5 +41,4 @@
  </div>
 
 {% endif %}
-
 {% endblock %}

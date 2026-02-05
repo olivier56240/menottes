@@ -18,8 +18,6 @@ def list_notes():
        .all()
    )
    return render_template("notes/list.html", notes=notes)
-
-
 @bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create_note():
@@ -27,13 +25,14 @@ def create_note():
 
    if form.validate_on_submit():
        note = Note(
+           title=form.title.data,
            content=form.content.data,
            user_id=current_user.id
        )
 
        db.session.add(note)
        db.session.commit()
-       flash("Note créée ✅", "success")
+       flash("Rassemblement créé ✅", "success")
        return redirect(url_for("notes.list_notes"))
 
    return render_template("notes/create.html", form=form)

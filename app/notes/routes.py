@@ -7,18 +7,24 @@ from . import bp
 from .forms import NoteForm
 
 
-@bp.get("/")
+from datetime import datetime
+from flask_login import login_required, current_user
+
+@bp.route("/notes/")
 @login_required
 def list_notes():
-   notes = (
-       Note.query
-       .filter_by(user_id=current_user.id)
-       .order_by(Note.id.desc())
-       .all()
-   )
-   return render_template("notes/list.html", notes=notes)
+    notes = (
+        Note.query
+        .filter_by(user_id=current_user.id)
+        .order_by(Note.start_at.asc().nulls_last())
+        .all()
+    )
 
-
+    return render_template(
+        "notes/list.html",
+        notes=notes,
+        now=datetime.utcnow()
+    )
 @bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create_note():
@@ -29,6 +35,8 @@ def create_note():
            content=form.content.data.strip(),
            category=(form.category.data or "voiture").strip().lower(),
            user_id=current_user.id,
+           location=form.location.data.strip() if form.location.data else None,
+           start_at=form.start_at.data,
        )
        db.session.add(note)
        db.session.commit()
@@ -48,12 +56,16 @@ def edit_note(note_id):
    # IMPORTANT : ne forcer la valeur du select QUE sur GET
    if request.method == "GET":
        form.category.data = note.category
+       form.location.data = note.location
+       form.start_at.data = note.start_at
+       form.category.data = note.category
 
    if form.validate_on_submit():
        note.title = form.title.data.strip()
        note.content = form.content.data.strip()
        note.category = (form.category.data or "voiture").strip().lower()
-
+       location=form.location.data.strip() if form.location.data else None,
+       start_at=form.start_at.data,
        db.session.commit()
        flash("Événement modifié ✅", "success")
        return redirect(url_for("notes.list_notes"))

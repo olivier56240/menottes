@@ -60,7 +60,7 @@ def edit_note(note_id: int):
 
 @bp.route("/<int:note_id>/delete", methods=["POST"])
 @login_required
-def delete_note(note_id: int):
+def delete_note(note_id):
    note = Note.query.filter_by(id=note_id, user_id=current_user.id).first_or_404()
 
    db.session.delete(note)

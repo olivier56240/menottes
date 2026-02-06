@@ -43,7 +43,7 @@ def create_note():
 
 @bp.route("/<int:note_id>/edit", methods=["GET", "POST"])
 @login_required
-def edit_note(note_id: int):
+def edit_note(note_id):
    note = Note.query.filter_by(id=note_id, user_id=current_user.id).first_or_404()
    form = NoteForm(obj=note)
    form.category.data = note.category

@@ -1,30 +1,27 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
+from datetime import datetime
 
 from app.extensions import db
 from app.models.note import Note
 from . import bp
 from .forms import NoteForm
 
-
-from datetime import datetime
-from flask_login import login_required, current_user
-
-@bp.route("/notes/")
+@bp.route("/")
 @login_required
 def list_notes():
-    notes = (
-        Note.query
-        .filter_by(user_id=current_user.id)
-        .order_by(Note.start_at.asc().nulls_last())
-        .all()
-    )
+   notes = (
+       Note.query
+       .filter_by(user_id=current_user.id)
+       .order_by(Note.start_at.asc().nulls_last())
+       .all()
+   )
 
-    return render_template(
-        "notes/list.html",
-        notes=notes,
-        now=datetime.utcnow()
-    )
+   return render_template(
+       "notes/list.html",
+       notes=notes,
+       now=datetime.utcnow()
+   )
 @bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create_note():

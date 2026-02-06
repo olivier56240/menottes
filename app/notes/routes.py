@@ -23,15 +23,13 @@ def list_notes():
 @login_required
 def create_note():
    form = NoteForm()
-
    if form.validate_on_submit():
        note = Note(
            title=form.title.data.strip(),
            content=form.content.data.strip(),
-           category=form.category.data.strip().lower(),
+           category=(form.category.data or "voiture").strip().lower(),
            user_id=current_user.id,
        )
-
        db.session.add(note)
        db.session.commit()
 
@@ -48,13 +46,13 @@ def edit_note(note_id):
    form = NoteForm(obj=note)
    form.category.data = note.category
    if form.validate_on_submit():
-       note.category = form.category.data.strip().lower()
-       note.title = form.title.data.strip()
-       note.content = form.content.data.strip()
-       db.session.commit()
-       flash("Rassemblement modifié ✅", "success")
-       return redirect(url_for("notes.list_notes"))
+      note.title = form.title.data.strip()
+      note.content = form.content.data.strip()
+      note.category = (form.category.data or "voiture").strip().lower()  # ✅ ICI
 
+   db.session.commit()
+   flash("Événement modifié ✅", "success")
+   return redirect(url_for("notes.list_notes"))
    return render_template("notes/edit.html", form=form, note=note)
 
 

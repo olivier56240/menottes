@@ -28,10 +28,13 @@ def create_note():
        note = Note(
            title=form.title.data.strip(),
            content=form.content.data.strip(),
+           category=form.category.data.strip().lower(),
            user_id=current_user.id,
        )
+
        db.session.add(note)
        db.session.commit()
+
        flash("Rassemblement créé ✅", "success")
        return redirect(url_for("notes.list_notes"))
 
@@ -43,8 +46,9 @@ def create_note():
 def edit_note(note_id: int):
    note = Note.query.filter_by(id=note_id, user_id=current_user.id).first_or_404()
    form = NoteForm(obj=note)
-
+   form.category.data = note.category
    if form.validate_on_submit():
+       note.category = form.category.data.strip().lower()
        note.title = form.title.data.strip()
        note.content = form.content.data.strip()
        db.session.commit()

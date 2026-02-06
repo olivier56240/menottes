@@ -1,6 +1,6 @@
 /* ===== GLOBAL ===== */
 body {
- background: url("../img/bg.jpg") center / cover fixed no-repeat;
+
  color: #fff;
  font-family: 'Segoe UI', sans-serif;
 }
@@ -107,17 +107,13 @@ h2 {
    margin-top: 60px;
 }
 /* ===== HERO ===== */
-.hero{
- position: relative;
+.hero {
  min-height: 62vh;
  border-radius: 18px;
- overflow: hidden;
- background-image: url("../img/hero.jpg");
- background-size: cover;
- background-position: center;
  display: flex;
  align-items: flex-end;
  padding: 36px;
+ background: #000;
  border: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -164,6 +160,11 @@ h2 {
 .category-moto {
  background-image: url("/static/img/moto.jpg");
 }
+
+.category-ballade{
+background-image: url("/static/img/ballade.jpg");
+}
+
 
 .card-overlay {
  position: absolute;

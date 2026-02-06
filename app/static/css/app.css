@@ -164,3 +164,19 @@ background-image: url("/static/img/ballade.jpg");
  inset: 0;
 background: rgba(0,0,0,0.55);
 }
+/* ===== FIX VISIBILITÉ (FORCE TEXTE BLANC) ===== */
+body,
+body * {
+ color: #fff !important;
+}
+
+/* liens visibles */
+a { color: #9fd3ff !important; }
+
+/* empêche les blocs blancs/gris de cacher le fond */
+.container,
+.card,
+.note-card,
+.list-group-item {
+ background: transparent !important;
+}

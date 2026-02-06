@@ -1,106 +1,36 @@
+
 /* ===== GLOBAL ===== */
 body {
  background: #000;
  color: #fff;
  font-family: 'Segoe UI', sans-serif;
+ margin: 0;
+ padding: 0;
 }
 
-
-
-  
-
-
-/* ===== HERO TITLE ===== */
-h2 {
-   font-weight: 800;
-   font-size: 38px;
-   letter-spacing: 1px;
-   margin-bottom: 30px;
+/* liens visibles */
+a {
+ color: #9fd3ff;
+ text-decoration: none;
 }
-
-/* ===== CREATE BUTTON ===== */
-.btn-primary {
-   background: linear-gradient(45deg, #ff3c00, #ff7a00);
-   border: none;
-   padding: 12px 22px;
-   font-weight: 700;
-   border-radius: 10px;
-   box-shadow: 0 8px 25px rgba(255, 60, 0, 0.4);
-   transition: 0.3s;
-}
-
-.btn-primary:hover {
-   transform: translateY(-2px);
-   box-shadow: 0 12px 35px rgba(255, 60, 0, 0.6);
-}
-
-/* ===== CARDS ===== */
-.rr-card {
-   background: linear-gradient(145deg, #1f1f1f, #151515);
-   border-radius: 18px;
-   overflow: hidden;
-   border: 1px solid rgba(255,255,255,0.05);
-   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-   transition: 0.3s ease;
-}
-
-.rr-card:hover {
-   transform: translateY(-6px);
-   box-shadow: 0 20px 60px rgba(0,0,0,0.9);
-}
-
-/* ===== CARD TITLE ===== */
-.rr-title {
-   font-size: 22px;
-   font-weight: 700;
-   color: #ffffff;
-}
-
-/* ===== CARD TEXT ===== */
-.rr-desc {
-   opacity: 0.8;
-   font-size: 15px;
-}
-
-/* ===== FOOTER ===== */
-.rr-footer {
-   background: rgba(0,0,0,0.4);
-   border-top: 1px solid rgba(255,255,255,0.05);
-   padding: 15px;
-}
-
-/* ===== BUTTONS ===== */
-.btn-warning {
-   background: #ffb300;
-   border: none;
-   font-weight: 600;
-   border-radius: 8px;
-}
-
-.btn-danger {
-   background: #ff2e2e;
-   border: none;
-   font-weight: 600;
-   border-radius: 8px;
-}
-
-/* ===== GRID SPACE ===== */
-.row.g-4 > * {
-   margin-bottom: 25px;
+a:hover {
+ text-decoration: underline;
 }
 
 /* ===== NAVBAR ===== */
 .navbar {
-   background: #000;
-   box-shadow: 0 5px 30px rgba(0,0,0,0.8);
+ background: #000;
+ box-shadow: 0 5px 30px rgba(0,0,0,0.8);
 }
 
-/* ===== CONTAINER SPACING ===== */
+/* ===== CONTAINER ===== */
 .container {
-   margin-top: 60px;
+ margin-top: 60px;
 }
+
 /* ===== HERO ===== */
 .hero {
+ position: relative;          /* IMPORTANT */
  min-height: 62vh;
  border-radius: 18px;
  display: flex;
@@ -108,36 +38,121 @@ h2 {
  padding: 36px;
  background: #000;
  border: 1px solid rgba(255,255,255,0.08);
+ overflow: hidden;            /* IMPORTANT */
 }
 
-.hero-overlay{
+/* overlay visuel UNIQUEMENT */
+.hero-overlay {
  position: absolute;
  inset: 0;
- background: linear-gradient(90deg, rgba(0,0,0,0.78), rgba(0,0,0,0.25));
+ background: linear-gradient(
+   90deg,
+   rgba(0,0,0,0.78),
+   rgba(0,0,0,0.25)
+ );
+ pointer-events: none;        /* FIX CLICS */
 }
 
-.hero-content{
+/* contenu au-dessus */
+.hero-content {
  position: relative;
  max-width: 720px;
+ z-index: 1;
 }
 
-.hero-title{
+.hero-title {
  font-size: 56px;
  font-weight: 800;
  margin: 0 0 10px 0;
 }
 
-.hero-subtitle{
+.hero-subtitle {
  font-size: 18px;
  opacity: 0.9;
  margin: 0 0 18px 0;
 }
 
-.hero-actions{
+.hero-actions {
  display: flex;
  gap: 12px;
  flex-wrap: wrap;
 }
+
+/* ===== TITRES ===== */
+h2 {
+ font-weight: 800;
+ font-size: 38px;
+ letter-spacing: 1px;
+ margin-bottom: 30px;
+}
+
+/* ===== BOUTONS ===== */
+.btn-primary {
+ background: linear-gradient(45deg, #ff3c00, #ff7a00);
+ border: none;
+ padding: 12px 22px;
+ font-weight: 700;
+ border-radius: 10px;
+ box-shadow: 0 8px 25px rgba(255, 60, 0, 0.4);
+ transition: 0.3s;
+}
+
+.btn-primary:hover {
+ transform: translateY(-2px);
+ box-shadow: 0 12px 35px rgba(255, 60, 0, 0.6);
+}
+
+.btn-warning {
+ background: #ffb300;
+ border: none;
+ font-weight: 600;
+ border-radius: 8px;
+}
+
+.btn-danger {
+ background: #ff2e2e;
+ border: none;
+ font-weight: 600;
+ border-radius: 8px;
+}
+
+/* ===== CARDS ===== */
+.rr-card {
+ background: linear-gradient(145deg, #1f1f1f, #151515);
+ border-radius: 18px;
+ overflow: hidden;
+ border: 1px solid rgba(255,255,255,0.05);
+ box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+ transition: 0.3s ease;
+}
+
+.rr-card:hover {
+ transform: translateY(-6px);
+ box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+}
+
+.rr-title {
+ font-size: 22px;
+ font-weight: 700;
+}
+
+.rr-desc {
+ opacity: 0.8;
+ font-size: 15px;
+}
+
+.rr-footer {
+ background: rgba(0,0,0,0.4);
+ border-top: 1px solid rgba(255,255,255,0.05);
+ padding: 15px;
+}
+
+/* ===== GRID ===== */
+.row.g-4 > * {
+ margin-bottom: 25px;
+}
+
+/* ===== IMAGE CARDS (CATÉGORIES) ===== */
 .card {
  position: relative;
  height: 220px;
@@ -147,36 +162,17 @@ h2 {
  background-position: center;
 }
 
-.category-voiture {
- background-image: url("/static/img/voiture.jpg");
-}
-.category-moto {
- background-image: url("/static/img/moto.jpg");
-}
-
-.category-ballade{
-background-image: url("/static/img/ballade.jpg");
-}
-
-
 .card-overlay {
  position: absolute;
  inset: 0;
-background: rgba(0,0,0,0.55);
-}
-/* ===== FIX VISIBILITÉ (FORCE TEXTE BLANC) ===== */
-body,
-body * {
- color: #fff !important;
+ background: rgba(0,0,0,0.55);
+ pointer-events: none;
 }
 
-/* liens visibles */
-a { color: #9fd3ff !important; }
+.category-voiture {
+ background-image: url("/static/img/voiture.jpg");
+}
 
-/* empêche les blocs blancs/gris de cacher le fond */
-.container,
-.card,
-.note-card,
-.list-group-item {
- background: transparent !important;
+.category-moto {
+ background-image: url("/static/img/moto.jpg");
 }

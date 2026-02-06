@@ -22,6 +22,22 @@
        <button class="btn btn-warning" type="submit">Enregistrer</button>
        <a class="btn btn-secondary" href="{{ url_for('notes.list_notes') }}">Retour</a>
      </div>
+     <div class="mb-3">
+ {{ form.title.label(class="form-label") }}
+ {{ form.title(class="form-control") }}
+</div>
+
+<div class="mb-3">
+ {{ form.category.label(class="form-label") }}
+ {{ form.category(class="form-select") }}
+</div>
+
+<div class="mb-3">
+ {{ form.content.label(class="form-label") }}
+ {{ form.content(class="form-control", rows="6") }}
+</div>
+
+{{ form.submit(class="btn btn-primary") }}
    </form>
  </div>
 </div>

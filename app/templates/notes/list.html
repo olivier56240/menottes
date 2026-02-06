@@ -2,15 +2,24 @@
 {% block content %}
 
 <div class="container rr-page">
+
  <div class="rr-header">
    <h1 class="rr-h1">Rassemblements à venir</h1>
-   <a class="rr-add" href="{{ url_for('notes.create_note') }}">+ Ajouter un événement</a>
+   <a class="rr-add" href="{{ url_for('notes.create_note') }}">
+     + Ajouter un événement
+   </a>
  </div>
+
+ <div class="rr-grid">
+   ...
+ </div>
+
+</div>
 
  {% if notes and notes|length > 0 %}
    <div class="rr-grid">
      {% for note in notes %}
-       {% set cat = (note.category or "voiture")|lower %}
+      {% set cat = (note.category or "voiture")|lower|trim %}
        <article class="rr-card category-{{ cat }}">
          <div class="rr-card-overlay"></div>
 

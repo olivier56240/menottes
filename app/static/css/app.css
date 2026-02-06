@@ -176,3 +176,15 @@ h2 {
 .category-moto {
  background-image: url("/static/img/moto.jpg");
 }
+/* ===== FORMS FIX ===== */
+input,
+textarea,
+select {
+ color: #000;
+ background: #fff;
+}
+
+input::placeholder,
+textarea::placeholder {
+ color: #666;
+}

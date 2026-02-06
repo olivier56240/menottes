@@ -1,45 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2 class="mb-4">Rassemblements à venir</h2>
-
-<a href="{{ url_for('notes.create_note') }}" class="btn btn-primary mb-4">
- ➕ Créer un rassemblement
-</a>
-
-{% if notes|length == 0 %}
- <div class="alert alert-secondary">
-   Aucun rassemblement pour le moment.
+<div class="container rr-page">
+ <div class="rr-header">
+   <h1 class="rr-h1">Rassemblements à venir</h1>
+   <a class="rr-add" href="{{ url_for('notes.create_note') }}">+ Ajouter un événement</a>
  </div>
-{% else %}
-<div class="grid">
- {% for note in notes %}
- <div class="card category-{{ note.category|lower|trim }}"></div>
 
- <div class="card-overlay"></div>
+ {% if notes and notes|length > 0 %}
+   <div class="rr-grid">
+     {% for note in notes %}
+       {% set cat = (note.category or "voiture")|lower %}
+       <article class="rr-card category-{{ cat }}">
+         <div class="rr-card-overlay"></div>
 
- <div class="card-content">
-   <h3>{{ note.title }}</h3>
-   <p>{{ note.content }}</p>
+         <div class="rr-card-body">
+           <div class="rr-badge">{{ cat|capitalize }}</div>
 
-   <div class="actions">
-     <a href="{{ url_for('notes.edit_note', note_id=note.id) }}"
-        class="btn btn-warning">Modifier</a>
+           <h3 class="rr-title">{{ note.title }}</h3>
 
-   <form action="{{ url_for('notes.delete_note', note_id=note.id) }}" method="post" style="display:inline;">
- {{ csrf_token() }}
- <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer ?')">
-   Supprimer
- </button>
-</form>
+           <p class="rr-desc">
+             {{ (note.content or "")[:140] }}{% if note.content and note.content|length > 140 %}…{% endif %}
+           </p>
+
+           <div class="rr-meta">
+             <span>🕒 {{ note.created_at.strftime("%d/%m/%Y") if note.created_at else "" }}</span>
+           </div>
+
+           <div class="rr-actions">
+             <a class="rr-btn rr-btn-edit" href="{{ url_for('notes.edit_note', note_id=note.id) }}">Modifier</a>
+
+             <!-- IMPORTANT: suppression en POST -->
+             <form class="rr-delete-form" method="POST" action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+               <button class="rr-btn rr-btn-del" type="submit" onclick="return confirm('Supprimer cet événement ?');">
+                 Supprimer
+               </button>
+             </form>
+           </div>
+         </div>
+       </article>
+     {% endfor %}
    </div>
- </div>
-
+ {% else %}
+   <div class="rr-empty">
+     <h2>Aucun événement pour l’instant</h2>
+     <p>Crée ton premier rassemblement.</p>
+     <a class="rr-add" href="{{ url_for('notes.create_note') }}">+ Ajouter un événement</a>
+   </div>
+ {% endif %}
 </div>
 
- {% endfor %}
-</div>
- 
-
-{% endif %}
 {% endblock %}

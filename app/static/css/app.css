@@ -188,3 +188,155 @@ input::placeholder,
 textarea::placeholder {
  color: #666;
 }
+/* =========================
+  RASSORIDE - LIST (FINAL)
+========================= */
+
+.rr-page { padding-top: 30px; padding-bottom: 60px; }
+
+.rr-header{
+ display:flex;
+ align-items:flex-end;
+ justify-content:space-between;
+ gap:16px;
+ margin: 12px 0 22px;
+}
+.rr-h1{ margin:0; font-size: 38px; font-weight: 800; letter-spacing: .5px; }
+
+.rr-add{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ padding: 12px 18px;
+ border-radius: 12px;
+ text-decoration:none;
+ background: linear-gradient(45deg, #ff3c00, #ff7a00);
+ color:#fff !important;
+ font-weight:800;
+ box-shadow: 0 10px 30px rgba(255,60,0,.25);
+}
+.rr-add:hover{ transform: translateY(-1px); }
+
+.rr-grid{
+ display:grid;
+ grid-template-columns: repeat(4, minmax(0, 1fr));
+ gap: 18px;
+}
+@media (max-width: 1200px){ .rr-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px){ .rr-grid{ grid-template-columns: 1fr; } }
+
+.rr-card{
+ position:relative;
+ min-height: 360px;
+ border-radius: 18px;
+ overflow:hidden;
+ background-size: cover;
+ background-position: center;
+ border: 1px solid rgba(255,255,255,.10);
+ box-shadow: 0 18px 60px rgba(0,0,0,.55);
+ transform: translateZ(0);
+}
+.rr-card:hover{ transform: translateY(-4px); }
+
+.rr-card-overlay{
+ position:absolute;
+ inset:0;
+ background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.75));
+}
+
+.rr-card-body{
+ position:relative;
+ z-index:2;
+ height:100%;
+ display:flex;
+ flex-direction:column;
+ justify-content:flex-end;
+ padding: 18px;
+ gap: 10px;
+}
+
+.rr-badge{
+ display:inline-flex;
+ width: fit-content;
+ padding: 6px 10px;
+ border-radius: 999px;
+ background: rgba(0,0,0,.55);
+ border: 1px solid rgba(255,255,255,.12);
+ font-weight: 800;
+ font-size: 12px;
+ letter-spacing: .4px;
+}
+
+.rr-title{
+ margin:0;
+ font-size: 20px;
+ font-weight: 900;
+ line-height: 1.15;
+ color:#fff !important;
+}
+.rr-desc{
+ margin:0;
+ color: rgba(255,255,255,.86) !important;
+ font-size: 14px;
+ line-height: 1.35;
+ max-width: 48ch;
+}
+.rr-meta{
+ font-size: 12px;
+ color: rgba(255,255,255,.75) !important;
+}
+
+.rr-actions{
+ display:flex;
+ gap: 10px;
+ align-items:center;
+ margin-top: 6px;
+}
+.rr-btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ padding: 10px 12px;
+ border-radius: 12px;
+ text-decoration:none;
+ font-weight: 900;
+ border: 0;
+ cursor:pointer;
+}
+.rr-btn-edit{
+ background: rgba(255,255,255,.16);
+ color:#fff !important;
+ border: 1px solid rgba(255,255,255,.18);
+}
+.rr-btn-del{
+ background: rgba(255, 46, 46, .95);
+ color:#fff !important;
+}
+.rr-delete-form{ margin:0; }
+
+/* Forcer le fond global dark + empêcher “page noire sans texte” */
+body{
+ background:#000 !important;
+ color:#fff !important;
+}
+a{ color:#9fd3ff; }
+
+/* Empêche bootstrap/container blancs de casser le rendu */
+.container,
+.card,
+.list-group-item{
+ background: transparent !important;
+}
+
+/* Catégories => images (si tu les as déjà, ça ne gêne pas) */
+.category-voiture { background-image: url("/static/img/voiture.jpg"); }
+.category-moto { background-image: url("/static/img/moto.jpg"); }
+.category-ballade { background-image: url("/static/img/ballade.jpg"); }
+.category-default { background-image: url("/static/img/voiture.jpg"); }
+
+.rr-empty{
+ border: 1px solid rgba(255,255,255,.10);
+ border-radius: 18px;
+ padding: 26px;
+ background: rgba(255,255,255,.04);
+}

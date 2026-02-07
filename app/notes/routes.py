@@ -7,21 +7,19 @@ from app.models.note import Note
 from . import bp
 from .forms import NoteForm
 
-@bp.route("/")
+
+@bp.route("/", methods=["GET"])
 @login_required
 def list_notes():
-   notes = (
-       Note.query
-       .filter_by(user_id=current_user.id)
-       .order_by(Note.start_at.asc().nulls_last())
-       .all()
-   )
+   q = Note.query.filter_by(user_id=current_user.id)
 
-   return render_template(
-       "notes/list.html",
-       notes=notes,
-       now=datetime.utcnow()
-   )
+   if hasattr(Note, "start_at"):
+       q = q.order_by(Note.start_at.asc().nulls_last())
+   else:
+       q = q.order_by(Note.id.desc())
+
+   notes = q.all()
+   return render_template("notes/list.html", notes=notes)
 @bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create_note():
@@ -54,10 +52,14 @@ def edit_note(note_id):
        note.title = form.title.data.strip()
        note.content = form.content.data.strip()
        note.category = (form.category.data or "voiture").strip().lower()
-   if hasattr(note, "location"):
-       note.location = form.location.data.strip() if form.location.data else None
-   if hasattr(note, "start_at"):
-       note.start_at = form.start_at.data
+
+       # Champs optionnels (ne cassent jamais)
+       if hasattr(form, "location") and hasattr(note, "location"):
+           note.location = form.location.data.strip() if form.location.data else None
+
+       if hasattr(form, "start_at") and hasattr(note, "start_at"):
+           note.start_at = form.start_at.data
+
        db.session.commit()
        flash("Événement modifié ✅", "success")
        return redirect(url_for("notes.list_notes"))

@@ -20,6 +20,12 @@ def list_notes():
 
    notes = q.all()
    return render_template("notes/list.html", notes=notes)
+   "notes/list.html",
+   notes=notes,
+   now=datetime.utcnow()
+   
+
+
 @bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create_note():

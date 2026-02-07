@@ -20,6 +20,10 @@
    <div class="rr-grid">
      {% for note in notes %}
       {% set cat = (note.category or "voiture")|lower|trim %}
+      {% set is_past = note.start_at and note.start_at < now %}
+<div class="rr-status {{ 'past' if is_past else 'upcoming' }}">
+ {{ 'Passé' if is_past else 'À venir' }}
+</div>
        <article class="rr-card category-{{ cat }}">
          <div class="rr-card-overlay"></div>
 

@@ -36,7 +36,15 @@
  {{ form.content.label(class="form-label") }}
  {{ form.content(class="form-control", rows="6") }}
 </div>
+<div class="mb-3">
+ {{ form.location.label(class="form-label") }}
+ {{ form.location(class="form-control") }}
+</div>
 
+<div class="mb-3">
+ {{ form.start_at.label(class="form-label") }}
+ {{ form.start_at(class="form-control") }}
+</div>
 {{ form.submit(class="btn btn-primary") }}
    </form>
  </div>

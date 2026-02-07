@@ -50,19 +50,14 @@ def edit_note(note_id):
    note = Note.query.filter_by(id=note_id, user_id=current_user.id).first_or_404()
    form = NoteForm(obj=note)
 
-   # IMPORTANT : ne forcer la valeur du select QUE sur GET
-   if request.method == "GET":
-       form.category.data = note.category
-       form.location.data = note.location
-       form.start_at.data = note.start_at
-       form.category.data = note.category
-
    if form.validate_on_submit():
        note.title = form.title.data.strip()
        note.content = form.content.data.strip()
        note.category = (form.category.data or "voiture").strip().lower()
-       location=form.location.data.strip() if form.location.data else None,
-       start_at=form.start_at.data,
+   if hasattr(note, "location"):
+       note.location = form.location.data.strip() if form.location.data else None
+   if hasattr(note, "start_at"):
+       note.start_at = form.start_at.data
        db.session.commit()
        flash("Événement modifié ✅", "success")
        return redirect(url_for("notes.list_notes"))

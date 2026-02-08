@@ -1,21 +1,16 @@
 from flask_wtf import FlaskForm
-from wtforms import (
-   StringField,
-   TextAreaField,
-   SelectField,
-   DateTimeLocalField
-)
-from wtforms.validators import DataRequired, Optional, Length
+from wtforms import StringField, TextAreaField, SelectField
+from wtforms.fields import DateTimeLocalField
+from wtforms.validators import DataRequired, Length, Optional
 
-# Catégories disponibles dans toute l'app
 CATEGORY_CHOICES = [
    ("voiture", "Voiture"),
    ("moto", "Moto"),
+   ("ballade", "Balade"),
+   ("4x4", "4x4"),
    ("enduro", "Enduro"),
    ("campingcar", "Camping-car"),
-   ("4x4", "4x4"),
    ("bourse", "Bourse"),
-   ("ballade", "Balade"),
 ]
 
 class NoteForm(FlaskForm):
@@ -32,12 +27,12 @@ class NoteForm(FlaskForm):
 
    content = TextAreaField(
        "Description",
-       validators=[Optional()]
+       validators=[Optional(), Length(max=2000)]
    )
 
    location = StringField(
        "Lieu",
-       validators=[Optional()]
+       validators=[Optional(), Length(max=120)]
    )
 
    start_at = DateTimeLocalField(
@@ -45,5 +40,3 @@ class NoteForm(FlaskForm):
        format="%Y-%m-%dT%H:%M",
        validators=[Optional()]
    )
-
-   

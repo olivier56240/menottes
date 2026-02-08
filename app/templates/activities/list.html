@@ -7,6 +7,14 @@
 <a href="{{ url_for('activities.create_activity') }}" class="btn btn-primary mb-3">
    Créer une activité
 </a>
+{% if note.start_at %}
+ <div>{{ note.start_at.strftime("%d/%m/%Y %H:%M") }}</div>
+{% endif %}
+
+{% if note.location %}
+ <div>{{ note.location }}</div>
+{% endif %}
+
 
 {% if activities %}
    <ul class="list-group">

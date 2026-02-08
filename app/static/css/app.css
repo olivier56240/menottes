@@ -82,7 +82,7 @@ a:hover {
 ========================= */
 .rr-card {
  position: relative;
- height: 360px;
+ aspect-ratio: 16 / 9;
  border-radius: 20px;
  overflow: hidden;
  border: 1px solid rgba(255, 255, 255, 0.08);
@@ -276,7 +276,7 @@ textarea::placeholder {
 
 /* Catégories où on garde le look premium (cover) */
 .category-voiture .rr-card-img,
-.category-moto .rr-card-img{ object-position: center 65%; }
+.category-moto .rr-card-img{ object-position: center 55%; }
 .category-campingcar .rr-card-img,
 .category-bourse .rr-card-img{
  object-fit: cover;           /* plein cadre */

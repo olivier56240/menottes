@@ -1,14 +1,20 @@
-
-/* ===== GLOBAL ===== */
-body {
- background: #000;
- color: #fff;
- font-family: 'Segoe UI', sans-serif;
- margin: 0;
- padding: 0;
+/* =========================
+  GLOBAL
+========================= */
+*,
+*::before,
+*::after {
+ box-sizing: border-box;
 }
 
-/* liens visibles */
+body {
+ margin: 0;
+ padding: 0;
+ background: #000;
+ color: #fff;
+ font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
 a {
  color: #9fd3ff;
  text-decoration: none;
@@ -17,408 +23,208 @@ a:hover {
  text-decoration: underline;
 }
 
-/* ===== NAVBAR ===== */
-.navbar {
- background: #000;
- box-shadow: 0 5px 30px rgba(0,0,0,0.8);
+/* =========================
+  PAGE NOTES
+========================= */
+.rr-page {
+ max-width: 1280px;
+ margin: 0 auto;
+ padding: 40px 20px 80px;
 }
 
-/* ===== CONTAINER ===== */
-.container {
- margin-top: 60px;
-}
-
-/* ===== HERO ===== */
-.hero {
- position: relative;          /* IMPORTANT */
- min-height: 62vh;
- border-radius: 18px;
+/* =========================
+  HEADER
+========================= */
+.rr-header {
  display: flex;
- align-items: flex-end;
- padding: 36px;
- background: #000;
- border: 1px solid rgba(255,255,255,0.08);
- overflow: hidden;            /* IMPORTANT */
+ align-items: center;
+ justify-content: space-between;
+ gap: 16px;
+ margin-bottom: 32px;
 }
 
-/* overlay visuel UNIQUEMENT */
-.hero-overlay {
- position: absolute;
- inset: 0;
- background: linear-gradient(
-   90deg,
-   rgba(0,0,0,0.78),
-   rgba(0,0,0,0.25)
- );
- pointer-events: none;        /* FIX CLICS */
-}
-
-/* contenu au-dessus */
-.hero-content {
- position: relative;
- max-width: 720px;
- z-index: 1;
-}
-
-.hero-title {
- font-size: 56px;
- font-weight: 800;
- margin: 0 0 10px 0;
-}
-
-.hero-subtitle {
- font-size: 18px;
- opacity: 0.9;
- margin: 0 0 18px 0;
-}
-
-.hero-actions {
- display: flex;
- gap: 12px;
- flex-wrap: wrap;
-}
-
-/* ===== TITRES ===== */
-h2 {
- font-weight: 800;
+.rr-h1 {
+ margin: 0;
  font-size: 38px;
- letter-spacing: 1px;
- margin-bottom: 30px;
+ font-weight: 900;
+ letter-spacing: 0.5px;
 }
 
-/* ===== BOUTONS ===== */
-.btn-primary {
+/* bouton ajouter */
+.rr-add {
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ padding: 12px 20px;
+ border-radius: 14px;
+ font-weight: 800;
+ color: #fff !important;
  background: linear-gradient(45deg, #ff3c00, #ff7a00);
- border: none;
- padding: 12px 22px;
- font-weight: 700;
- border-radius: 10px;
- box-shadow: 0 8px 25px rgba(255, 60, 0, 0.4);
- transition: 0.3s;
+ box-shadow: 0 10px 30px rgba(255, 60, 0, 0.35);
+ transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-
-.btn-primary:hover {
+.rr-add:hover {
  transform: translateY(-2px);
- box-shadow: 0 12px 35px rgba(255, 60, 0, 0.6);
+ box-shadow: 0 16px 45px rgba(255, 60, 0, 0.55);
 }
 
-.btn-warning {
- background: #ffb300;
- border: none;
- font-weight: 600;
- border-radius: 8px;
+/* =========================
+  GRID
+========================= */
+.rr-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+ gap: 24px;
 }
 
-.btn-danger {
- background: #ff2e2e;
- border: none;
- font-weight: 600;
- border-radius: 8px;
-}
-
-/* ===== CARDS ===== */
+/* =========================
+  CARD
+========================= */
 .rr-card {
- background: linear-gradient(145deg, #1f1f1f, #151515);
- border-radius: 18px;
+ position: relative;
+ height: 360px;
+ border-radius: 20px;
  overflow: hidden;
- border: 1px solid rgba(255,255,255,0.05);
- box-shadow: 0 10px 40px rgba(0,0,0,0.6);
- transition: 0.3s ease;
+ border: 1px solid rgba(255, 255, 255, 0.08);
+ box-shadow: 0 18px 60px rgba(0, 0, 0, 0.65);
+ transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .rr-card:hover {
  transform: translateY(-6px);
- box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+ box-shadow: 0 26px 80px rgba(0, 0, 0, 0.9);
+}
+
+/* image plein fond */
+.rr-card-img {
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ display: block;
+ z-index: 0;
+}
+
+/* overlay lisibilité */
+.rr-card-overlay {
+ position: absolute;
+ inset: 0;
+ background: linear-gradient(
+   to top,
+   rgba(0, 0, 0, 0.85),
+   rgba(0, 0, 0, 0.25)
+ );
+ z-index: 1;
+}
+
+/* contenu */
+.rr-card-body {
+ position: relative;
+ z-index: 2;
+ height: 100%;
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-end;
+ padding: 20px;
+ gap: 10px;
+}
+
+/* =========================
+  CARD CONTENT
+========================= */
+.rr-badge {
+ display: inline-flex;
+ width: fit-content;
+ padding: 6px 12px;
+ border-radius: 999px;
+ background: rgba(0, 0, 0, 0.6);
+ border: 1px solid rgba(255, 255, 255, 0.15);
+ font-size: 12px;
+ font-weight: 800;
+ letter-spacing: 0.4px;
 }
 
 .rr-title {
+ margin: 0;
  font-size: 22px;
- font-weight: 700;
+ font-weight: 900;
+ line-height: 1.15;
 }
 
 .rr-desc {
- opacity: 0.8;
- font-size: 15px;
+ margin: 0;
+ font-size: 14px;
+ line-height: 1.35;
+ color: rgba(255, 255, 255, 0.85);
+ max-width: 50ch;
 }
 
-.rr-footer {
- background: rgba(0,0,0,0.4);
- border-top: 1px solid rgba(255,255,255,0.05);
- padding: 15px;
+.rr-meta {
+ font-size: 12px;
+ color: rgba(255, 255, 255, 0.75);
 }
 
-/* ===== GRID ===== */
-.row.g-4 > * {
- margin-bottom: 25px;
+/* =========================
+  ACTIONS
+========================= */
+.rr-actions {
+ display: flex;
+ gap: 10px;
+ margin-top: 8px;
+ align-items: center;
 }
 
-/* ===== IMAGE CARDS (CATÉGORIES) ===== */
-.rr.card {
- position: relative;
- height: 220px;
- border-radius: 16px;
- overflow: hidden;
- background-size: cover;
- background-position: center;
+.rr-btn {
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ padding: 10px 14px;
+ border-radius: 12px;
+ font-weight: 900;
+ cursor: pointer;
+ border: none;
+ text-decoration: none;
 }
 
-.card-overlay {
- position: absolute;
- inset: 0;
- background: rgba(0,0,0,0.55);
- pointer-events: none;
+.rr-btn-edit {
+ background: rgba(255, 255, 255, 0.18);
+ color: #fff !important;
+ border: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-.category-voiture {
- background-image: url("/static/img/voiture.jpg");
+.rr-btn-del {
+ background: rgba(255, 46, 46, 0.95);
+ color: #fff !important;
 }
 
-.category-moto {
- background-image: url("/static/img/moto.jpg");
+.rr-delete-form {
+ margin: 0;
 }
-/* ===== FORMS FIX ===== */
+
+/* =========================
+  EMPTY STATE
+========================= */
+.rr-empty {
+ margin-top: 20px;
+ padding: 30px;
+ border-radius: 18px;
+ background: rgba(255, 255, 255, 0.05);
+ border: 1px solid rgba(255, 255, 255, 0.1);
+ font-size: 16px;
+}
+
+/* =========================
+  FORMS (GLOBAL FIX)
+========================= */
 input,
 textarea,
 select {
- color: #000;
  background: #fff;
+ color: #000;
 }
 
 input::placeholder,
 textarea::placeholder {
  color: #666;
 }
-/* =========================
-  RASSORIDE - LIST (FINAL)
-========================= */
-
-.rr-page { padding-top: 30px; padding-bottom: 60px; }
-
-.rr-header{
- display:flex;
- align-items:flex-end;
- justify-content:space-between;
- gap:16px;
- margin: 12px 0 22px;
-}
-.rr-h1{ margin:0; font-size: 38px; font-weight: 800; letter-spacing: .5px; }
-
-.rr-add{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- padding: 12px 18px;
- border-radius: 12px;
- text-decoration:none;
- background: linear-gradient(45deg, #ff3c00, #ff7a00);
- color:#fff !important;
- font-weight:800;
- box-shadow: 0 10px 30px rgba(255,60,0,.25);
-}
-.rr-add:hover{ transform: translateY(-1px); }
-
-.rr-grid{
- display:grid;
- grid-template-columns: repeat(4, minmax(0, 1fr));
- gap: 18px;
-}
-@media (max-width: 1200px){ .rr-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 720px){ .rr-grid{ grid-template-columns: 1fr; } }
-
-.rr-card{
- position:relative;
- min-height: 360px;
- border-radius: 18px;
- overflow:hidden;
- background-size: cover;
- background-position: center;
- border: 1px solid rgba(255,255,255,.10);
- box-shadow: 0 18px 60px rgba(0,0,0,.55);
- transform: translateZ(0);
-}
-.rr-card:hover{ transform: translateY(-4px); }
-
-.rr-card-overlay{
- position:absolute;
- inset:0;
- background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.75));
-}
-
-.rr-card-body{
- position:relative;
- z-index:2;
- height:100%;
- display:flex;
- flex-direction:column;
- justify-content:flex-end;
- padding: 18px;
- gap: 10px;
-}
-
-.rr-badge{
- display:inline-flex;
- width: fit-content;
- padding: 6px 10px;
- border-radius: 999px;
- background: rgba(0,0,0,.55);
- border: 1px solid rgba(255,255,255,.12);
- font-weight: 800;
- font-size: 12px;
- letter-spacing: .4px;
-}
-
-.rr-title{
- margin:0;
- font-size: 20px;
- font-weight: 900;
- line-height: 1.15;
- color:#fff !important;
-}
-.rr-desc{
- margin:0;
- color: rgba(255,255,255,.86) !important;
- font-size: 14px;
- line-height: 1.35;
- max-width: 48ch;
-}
-.rr-meta{
- font-size: 12px;
- color: rgba(255,255,255,.75) !important;
-}
-
-.rr-actions{
- display:flex;
- gap: 10px;
- align-items:center;
- margin-top: 6px;
-}
-.rr-btn{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- padding: 10px 12px;
- border-radius: 12px;
- text-decoration:none;
- font-weight: 900;
- border: 0;
- cursor:pointer;
-}
-.rr-btn-edit{
- background: rgba(255,255,255,.16);
- color:#fff !important;
- border: 1px solid rgba(255,255,255,.18);
-}
-.rr-btn-del{
- background: rgba(255, 46, 46, .95);
- color:#fff !important;
-}
-.rr-delete-form{ margin:0; }
-
-/* Forcer le fond global dark + empêcher “page noire sans texte” */
-body{
- background:#000 !important;
- color:#fff !important;
-}
-a{ color:#9fd3ff; }
-
-/* Empêche bootstrap/container blancs de casser le rendu */
-.container,
-.card,
-.list-group-item{
- background: transparent !important;
-}
-
-/* Catégories => images (si tu les as déjà, ça ne gêne pas) */
-.category-voiture { background-image: url("/static/img/voiture.jpg"); }
-
-.category-moto { background-image: url("/static/img/moto.jpg"); }
-
-.category-ballade { background-image: url("/static/img/ballade.jpg"); }
-
-.category-default { background-image: url("/static/img/voiture.jpg"); }
-
-.rr-empty{
- border: 1px solid rgba(255,255,255,.10);
- border-radius: 18px;
- padding: 26px;
- background: rgba(255,255,255,.04);
-}
-/* ===============================
-  ALIGNEMENT CARTES (MAQUETTE)
-  =============================== */
-
-.rr-grid{
- display: grid;
- grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
- gap: 24px;
-}
-
-/* carte = même hauteur + image cover */
-.rr-card{
- position: relative;
- height: 360px;
- border-radius: 18px;
- overflow: hidden;
-
- background-size: cover;
- background-position: center;
-
- display: flex;
- align-items: flex-end;
-}
-
-/* voile dégradé (lisibilité) */
-.rr-card-overlay{
- position: absolute;
- inset: 0;
- background: linear-gradient(to top, rgba(0,0,0,0.78), rgba(0,0,0,0.25));
-}
-
-/* contenu toujours au même endroit */
-.rr-card-body{
- position: relative;
- width: 100%;
- padding: 20px;
- z-index: 1;
-}
-/* ===============================
-  PAGE NOTES / RASSEMBLEMENTS
-  =============================== */
-
-.rr-page{
- max-width: 1280px;
- margin: 0 auto;
- padding: 40px 20px;
-}
-
-/* header */
-.rr-header{
- display: flex;
- justify-content: space-between;
- align-items: center;
- margin-bottom: 32px;
-}
-
-.rr-h1{
- font-size: 34px;
- font-weight: 800;
-}
-
-/* bouton ajouter */
-.rr-add{
- background: linear-gradient(45deg, #ff3c00, #ff7a00);
- color: #fff;
- padding: 12px 20px;
- border-radius: 12px;
- font-weight: 700;
- text-decoration: none;
- box-shadow: 0 8px 25px rgba(255,60,0,0.45);
- transition: 0.25s;
-}
-
-.rr-add:hover{
- transform: translateY(-2px);
- box-shadow: 0 14px 40px rgba(255,60,0,0.6);
-}
-/* TEST CSS */
-.rr-card { outline: 6px solid lime !important; }

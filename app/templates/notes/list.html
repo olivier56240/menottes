@@ -10,9 +10,15 @@
    </a>
  </div>
 
- <div class="rr-grid">
-   ...
- </div>
+ {% set image_map = {
+   'voiture': 'voiture.jpg',
+   'moto': 'moto.jpg',
+   'enduro': 'enduro.jpg',
+   'campingcar': 'campingcar.jpg',
+   'ballade': 'ballade.jpg',
+   '4x4': '4x4.jpg',
+   'bourse': 'bourse.jpg'
+ } %}
 
 </div>
 
@@ -24,6 +30,14 @@
 
 </div>
        <article class="rr-card category-{{ cat }}">
+{% set cat_key = cat|replace('-', '')|replace(' ', '') %}
+{% set img = image_map.get(cat_key, 'voiture.jpg') %}
+
+<img
+ class="rr-card-img"
+ src="{{ url_for('static', filename='img/' ~ img) }}"
+ alt="{{ cat }}"
+
          <div class="rr-card-overlay"></div>
 
          <div class="rr-card-body">

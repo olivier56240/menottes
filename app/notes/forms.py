@@ -1,7 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField
-from wtforms.fields import DateTimeLocalField
-from wtforms.validators import DataRequired, Length, Optional
+from wtforms import (
+   StringField,
+   TextAreaField,
+   SelectField,
+   DateTimeLocalField,
+   SubmitField   # ✅ AJOUT ICI
+)
+from wtforms.validators import DataRequired, Optional, Length
 
 CATEGORY_CHOICES = [
    ("voiture", "Voiture"),
@@ -40,3 +45,4 @@ class NoteForm(FlaskForm):
        format="%Y-%m-%dT%H:%M",
        validators=[Optional()]
    )
+   submit = SubmitField("Publier")

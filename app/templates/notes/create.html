@@ -8,7 +8,6 @@
    <form method="POST">
      {{ form.hidden_tag() }}
 
-     <!-- TITRE -->
      <div class="mb-3">
        {{ form.title.label(class="form-label") }}
        {{ form.title(class="form-control rr-input", placeholder="Ex: Voiture - balade dimanche") }}
@@ -17,7 +16,6 @@
        {% endfor %}
      </div>
 
-     <!-- CATEGORIE -->
      <div class="mb-3">
        {{ form.category.label(class="form-label") }}
        {{ form.category(class="form-select rr-input") }}
@@ -26,7 +24,6 @@
        {% endfor %}
      </div>
 
-     <!-- DESCRIPTION -->
      <div class="mb-3">
        {{ form.content.label(class="form-label") }}
        {{ form.content(class="form-control rr-input", rows="6", placeholder="Lieu, heure, infos...") }}
@@ -35,29 +32,20 @@
        {% endfor %}
      </div>
 
-     <!-- LIEU -->
      <div class="mb-3">
        {{ form.location.label(class="form-label") }}
-       {{ form.location(class="form-control rr-input", placeholder="Ex: Paris / Parking ...") }}
-       {% for err in form.location.errors %}
-         <div class="text-danger small mt-1">{{ err }}</div>
-       {% endfor %}
+       {{ form.location(class="form-control rr-input") }}
      </div>
 
-     <!-- DATE/HEURE -->
      <div class="mb-3">
        {{ form.start_at.label(class="form-label") }}
        {{ form.start_at(class="form-control rr-input") }}
-       {% for err in form.start_at.errors %}
-         <div class="text-danger small mt-1">{{ err }}</div>
-       {% endfor %}
      </div>
 
      <div class="d-flex gap-2">
-       <button class="btn btn-primary" type="submit">Publier</button>
+       {{ form.submit(class="btn btn-danger") }}
        <a class="btn btn-secondary" href="{{ url_for('notes.list_notes') }}">Retour</a>
      </div>
-
    </form>
  </div>
 </div>

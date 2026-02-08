@@ -104,7 +104,7 @@ a:hover {
  object-fit: cover;
  display: block;
  z-index: 0;
- object-position: center bottom;
+
  pointer-events: none; /* FIX CLIC */
 }
 
@@ -133,6 +133,36 @@ a:hover {
  justify-content: flex-end;
  padding: 20px;
  gap: 10px;
+}
+
+/* ===============================
+  AJUSTEMENT IMAGE PAR CATÉGORIE
+  =============================== */
+
+/* Moto : on remonte (évite de couper la moto) */
+.category-moto .rr-card-img{
+ object-position: center 65%;
+}
+
+/* Voiture : centrée classique */
+.category-voiture .rr-card-img{
+ object-position: center center;
+}
+
+/* Balade (rando) : horizon plus haut */
+.category-ballade .rr-card-img{
+ object-position: center 35%;
+}
+
+/* 4x4 / enduro : bas visible */
+.category-4x4 .rr-card-img,
+.category-enduro .rr-card-img{
+ object-position: center 70%;
+}
+
+/* fallback sécurité */
+.category-default .rr-card-img{
+ object-position: center center;
 }
 
 /* =========================

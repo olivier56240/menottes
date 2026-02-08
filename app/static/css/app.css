@@ -95,17 +95,21 @@ a:hover {
  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.9);
 }
 
-/* image plein fond */
-.rr-card-img{
+/* Image affichée EN ENTIER (pas coupée) */
+.rr-card-img {
  position: absolute;
  inset: 0;
+
  width: 100%;
  height: 100%;
- object-fit: cover;           /* défaut: stylé */
- object-position: center;     /* défaut */
- display: block;
+
+ object-fit: contain;      /* 👈 clé du fix */
+ object-position: center;  /* centré */
+
+ background: #000;         /* bandes noires propres */
  z-index: 0;
- pointer-events: none;
+
+ pointer-events: none;     /* 👈 boutons cliquables */
 }
 
 /* overlay lisibilité */

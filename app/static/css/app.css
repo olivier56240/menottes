@@ -276,9 +276,28 @@ textarea::placeholder {
 
 /* Catégories où on garde le look premium (cover) */
 .category-voiture .rr-card-img,
-.category-moto .rr-card-img{ object-position: center 55%; }
+.category-moto .rr-card-img{ object-position: center 40%; }
 .category-campingcar .rr-card-img,
 .category-bourse .rr-card-img{
  object-fit: cover;           /* plein cadre */
  object-position: center;     /* tu peux ajuster si besoin */
+}
+/* ===== IMAGE POSITION FIX BY CATEGORY ===== */
+
+/* Par défaut */
+.rr-card-img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ object-position: center center;
+}
+
+/* Balade → on monte l'image */
+.rr-card.category-balade .rr-card-img {
+ object-position: center 30%;
+}
+
+/* Enduro → on descend l'image */
+.rr-card.category-enduro .rr-card-img {
+ object-position: center 70%;
 }

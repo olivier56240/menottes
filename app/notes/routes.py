@@ -19,10 +19,8 @@ def list_notes():
        q = q.order_by(Note.id.desc())
 
    notes = q.all()
-   return render_template("notes/list.html", notes=notes)
-   "notes/list.html",
-   notes=notes,
-   now=datetime.utcnow()
+ 
+   return render_template("notes/list.html", notes=notes, now=datetime.utcnow())
    
 
 

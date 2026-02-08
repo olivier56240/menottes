@@ -95,7 +95,7 @@ a:hover {
  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.9);
 }
 
-/* Image affichée EN ENTIER (pas coupée) */
+/* image affichée EN ENTIER */
 .rr-card-img {
  position: absolute;
  inset: 0;
@@ -103,13 +103,13 @@ a:hover {
  width: 100%;
  height: 100%;
 
- object-fit: contain;      /* 👈 clé du fix */
- object-position: center;  /* centré */
+ object-fit: contain;      /* 👈 image entière */
+ object-position: center;  /* centrée */
 
  background: #000;         /* bandes noires propres */
  z-index: 0;
 
- pointer-events: none;     /* 👈 boutons cliquables */
+ pointer-events: none;     /* boutons cliquables */
 }
 
 /* overlay lisibilité */

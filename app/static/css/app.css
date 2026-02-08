@@ -104,6 +104,8 @@ a:hover {
  object-fit: cover;
  display: block;
  z-index: 0;
+ object-position: center bottom;
+ pointer-events: none; /* FIX CLIC */
 }
 
 /* overlay lisibilité */
@@ -116,7 +118,10 @@ a:hover {
    rgba(0, 0, 0, 0.25)
  );
  z-index: 1;
+ pointer-events: none; /* FIX CLIC */
 }
+
+
 
 /* contenu */
 .rr-card-body {

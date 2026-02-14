@@ -503,13 +503,21 @@ button[type="submit"],
 /* =========================
   NOTES (grosses cartes)
 ========================= */
+
+.rr-notes{
+ display: grid;
+ grid-template-columns: 1fr;
+ gap: 18px;
+ margin-top: 18px;
+}
+
 .rr-note-card{
  position: relative;
  border-radius: 20px;
  overflow: hidden;
  border: 1px solid rgba(255,255,255,.08);
  box-shadow: 0 18px 60px rgba(0,0,0,.65);
- min-height: 260px;
+ height: 260px;
 }
 
 .rr-note-img{
@@ -526,28 +534,27 @@ button[type="submit"],
  position: absolute;
  inset: 0;
  background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,.15));
-}
-
-.rr-note-body{
- position: relative;
- z-index: 2;
- height: 100%;
- display: flex;
- flex-direction: column;
- justify-content: flex-end;
- padding: 18px;
- gap: 10px;
+ pointer-events: none;
 }
 
 .rr-note-badge{
- display: inline-flex;
- width: fit-content;
+ position: absolute;
+ top: 16px;
+ left: 16px;
  padding: 6px 12px;
  border-radius: 999px;
  background: rgba(0,0,0,.55);
  border: 1px solid rgba(255,255,255,.15);
  font-size: 12px;
  font-weight: 900;
+ z-index: 2;
 }
 
-/* Boutons en bas à gauche comme sur la maquette */
+.rr-note-actions{
+ position: absolute;
+ left: 16px;
+ bottom: 16px;
+ display: flex;
+ gap: 10px;
+ z-index: 2;
+}

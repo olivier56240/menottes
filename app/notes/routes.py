@@ -14,16 +14,6 @@ from .forms import NoteForm
 def list_notes():
    selected_cat = (request.args.get("cat") or "").strip().lower()
 
-   # Notes de l'utilisateur
-   q = Note.query.filter_by(user_id=current_user.id)
-   if hasattr(Note, "start_at"):
-       q = q.order_by(Note.start_at.asc().nulls_last())
-   else:
-       q = q.order_by(Note.id.desc())
-
-   notes = q.all()
-
-   # Catégories fixes
    categories = ["moto", "voiture", "enduro", "balade", "4x4", "campingcar", "bourse"]
 
    image_map = {
@@ -46,7 +36,20 @@ def list_notes():
        "bourse": "Bourses, brocantes et évènements à venir.",
    }
 
-   # Filtrage
+   # Notes user
+   q = Note.query.filter_by(user_id=current_user.id)
+   if hasattr(Note, "start_at"):
+       q = q.order_by(Note.start_at.asc().nulls_last())
+   else:
+       q = q.order_by(Note.id.desc())
+   notes = q.all()
+
+   # Counts
+   counts = {}
+   for cat in categories:
+       counts[cat] = sum(1 for n in notes if (n.category or "").strip().lower() == cat)
+
+   # Filtered notes
    if selected_cat:
        filtered_notes = [
            n for n in notes if (n.category or "").strip().lower() == selected_cat
@@ -54,14 +57,7 @@ def list_notes():
    else:
        filtered_notes = notes
 
-   # Compteurs
-   counts = {}
-   for cat in categories:
-       counts[cat] = sum(
-           1 for n in notes if (n.category or "").strip().lower() == cat
-       )
-
-   # Prochains évènements (3) pour la catégorie sélectionnée
+   # Prochains évènements (3) pour la catégorie
    now = datetime.utcnow()
    events = []
    if selected_cat and hasattr(Note, "start_at"):
@@ -94,7 +90,7 @@ def create_note():
            category=(form.category.data or "voiture").strip().lower(),
            user_id=current_user.id,
            location=form.location.data.strip() if getattr(form, "location", None) and form.location.data else None,
-           start_at=form.start_at.data if hasattr(form, "start_at") else None,
+           start_at=form.start_at.data if getattr(form, "start_at", None) else None,
        )
        db.session.add(note)
        db.session.commit()

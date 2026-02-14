@@ -11,7 +11,7 @@ from wtforms.validators import DataRequired, Optional, Length
 CATEGORY_CHOICES = [
    ("voiture", "Voiture"),
    ("moto", "Moto"),
-   ("ballade", "Balade"),
+   ("balade", "Balade"),
    ("4x4", "4x4"),
    ("enduro", "Enduro"),
    ("campingcar", "Camping-car"),

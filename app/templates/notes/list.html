@@ -15,67 +15,131 @@
    'moto': 'moto.jpg',
    'enduro': 'enduro.jpg',
    'campingcar': 'campingcar.jpg',
-   'ballade': 'ballade.jpg',
+   'balade': 'balade.jpg',
    '4x4': '4x4.jpg',
    'bourse': 'bourse.jpg'
  } %}
 
-</div>
+ {% if filtered_notes and filtered_notes|length > 0 %}
+   <div class="rr-layout">
 
- {% if notes and notes|length > 0 %}
-   <div class="rr-grid">
-     {% for note in notes %}
-      {% set cat = (note.category or "voiture")|lower|trim %}
-      {% set is_past = note.start_at and note.start_at < now %}
+     <!-- COLONNE GAUCHE -->
+     <div class="rr-left">
 
-</div>
-       <article class="rr-card category-{{ cat }}">
-{% set cat_key = cat|replace('-', '')|replace(' ', '') %}
-{% set img = image_map.get(cat_key, 'voiture.jpg') %}
+       <!-- CATEGORIES -->
+       <div class="rr-grid">
 
-<img
- class="rr-card-img"
- src="{{ url_for('static', filename='img/' ~ img) }}"
- alt="{{ cat }}"
+         <a class="rr-cat-link {% if not selected_cat %}is-active{% endif %}"
+            href="{{ url_for('notes.list_notes') }}">
+           <article class="rr-card category-default">
+             <img class="rr-card-img"
+                  src="{{ url_for('static', filename='img/voiture.jpg') }}"
+                  alt="Toutes">
+             <div class="rr-card-overlay"></div>
+             <div class="rr-card-body">
+               <div class="rr-badge">Toutes</div>
+               <div class="rr-meta">Tous les évènements à venir</div>
+             </div>
+           </article>
+         </a>
 
-        <div class="rr-card-overlay"></div>
+         {% for cat in categories %}
+           {% set img = image_map.get(cat, "voiture.jpg") %}
+           <a class="rr-cat-link {% if selected_cat == cat %}is-active{% endif %}"
+              href="{{ url_for('notes.list_notes') }}?cat={{ cat }}">
+             <article class="rr-card category-{{ cat }}">
+               <img class="rr-card-img"
+                    src="{{ url_for('static', filename='img/' ~ img) }}"
+                    alt="{{ cat }}">
+               <div class="rr-card-overlay"></div>
+               <div class="rr-card-body">
+                 <div class="rr-badge">{{ cat|capitalize }}</div>
+                 <div class="rr-meta">{{ counts.get(cat, 0) }} évènement(s) à venir</div>
+               </div>
+             </article>
+           </a>
+         {% endfor %}
 
-         <div class="rr-card-body">
-           <div class="rr-badge">{{ cat|capitalize }}</div>
+       </div><!-- /rr-grid -->
 
-           <h3 class="rr-title">{{ note.title }}</h3>
+       <!-- GROSSES CARTES NOTES -->
+       <div class="rr-notes">
+         {% for note in filtered_notes %}
+           {% set cat = (note.category or "voiture")|lower|trim %}
+           <article class="rr-note-card">
+             <img class="rr-note-img"
+                  src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
+                  alt="{{ cat }}">
 
-           <p class="rr-desc">
-             {{ (note.content or "")[:140] }}{% if note.content and note.content|length > 140 %}…{% endif %}
-           </p>
+             <div class="rr-note-badge">{{ cat|capitalize }}</div>
 
-           <div class="rr-meta">
-             <span>🕒 {{ note.created_at.strftime("%d/%m/%Y") if note.created_at else "" }}</span>
-           </div>
+             <div class="rr-note-actions">
+               <a class="rr-btn rr-btn-edit"
+                  href="{{ url_for('notes.edit_note', note_id=note.id) }}">Modifier</a>
 
-           <div class="rr-actions">
-             <a class="rr-btn rr-btn-edit" href="{{ url_for('notes.edit_note', note_id=note.id) }}">Modifier</a>
+               <form class="rr-delete-form"
+                     method="post"
+                     action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+                 <button class="rr-btn rr-btn-del" type="submit">Supprimer</button>
+               </form>
+             </div>
+           </article>
+         {% endfor %}
+       </div><!-- /rr-notes -->
 
-             <!-- IMPORTANT: suppression en POST -->
-           <form method="post" action="{{ url_for('notes.delete_note', note_id=note.id) }}" style="display:inline;">
- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
- <button type="submit" class="btn btn-danger btn-sm"
-         onclick="return confirm('Supprimer cet événement ?');">
-   Supprimer
- </button>
-</form>
-           </div>
+     </div><!-- /rr-left -->
+
+     <!-- COLONNE DROITE -->
+     <aside class="rr-right">
+       {% if selected_cat %}
+         <h2 class="rr-side-title">{{ selected_cat|capitalize }}</h2>
+         <p class="rr-side-desc">{{ category_texts.get(selected_cat, "Tous les évènements à venir.") }}</p>
+       {% else %}
+         <h2 class="rr-side-title">Choisis une catégorie</h2>
+         <p class="rr-side-desc">Clique sur une photo à gauche pour afficher les évènements à venir.</p>
+       {% endif %}
+
+       <h3 class="rr-side-sub">Prochains évènements</h3>
+
+       {% if events and events|length > 0 %}
+         <div class="rr-events">
+           {% for note in events %}
+             {% set cat = (note.category or "voiture")|lower|trim %}
+             <article class="rr-event">
+               <div class="rr-event-head">
+                 <div class="rr-badge">{{ cat|capitalize }}</div>
+                 <div class="rr-event-date">
+                   {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
+                 </div>
+               </div>
+
+               <h4 class="rr-event-title">{{ note.title }}</h4>
+
+               {% if note.content %}
+                 <p class="rr-event-desc">{{ note.content[:160] }}{% if note.content|length > 160 %}…{% endif %}</p>
+               {% endif %}
+
+               <div class="rr-actions">
+                 <a class="rr-btn rr-btn-edit"
+                    href="{{ url_for('notes.edit_note', note_id=note.id) }}">Modifier</a>
+
+                 <form class="rr-delete-form"
+                       method="post"
+                       action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+                   <button class="rr-btn rr-btn-del" type="submit">Supprimer</button>
+                 </form>
+               </div>
+             </article>
+           {% endfor %}
          </div>
-       </article>
-     {% endfor %}
-   </div>
- {% else %}
-   <div class="rr-empty">
-     <h2>Aucun événement pour l’instant</h2>
-     <p>Crée ton premier rassemblement.</p>
-     <a class="rr-add" href="{{ url_for('notes.create_note') }}">+ Ajouter un événement</a>
-   </div>
+       {% else %}
+         <p class="rr-empty">Aucun évènement à venir{% if selected_cat %} pour cette catégorie{% endif %}.</p>
+       {% endif %}
+     </aside>
+
+   </div><!-- /rr-layout -->
  {% endif %}
-</div>
+
+</div><!-- /container -->
 
 {% endblock %}

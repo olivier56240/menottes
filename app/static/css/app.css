@@ -160,7 +160,7 @@ a:hover {
 }
 
 /* Balade (rando) : horizon plus haut */
-.category-ballade .rr-card-img{
+.category- .rr-card-img{
  object-position: center 35%;
 }
 
@@ -278,7 +278,7 @@ textarea::placeholder {
   =============================== */
 
 /* Catégories où on veut voir TOUTE l'image (pas coupée) */
-.category-ballade .rr-card-img,
+.category-balade .rr-card-img,
 .category-4x4 .rr-card-img,
 .category-enduro .rr-card-img{
  object-fit: cover;         /* affiche l'image entière */

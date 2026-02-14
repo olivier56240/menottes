@@ -7,10 +7,13 @@ from app.models.note import Note
 from . import bp
 from .forms import NoteForm
 
-
 @bp.route("/", methods=["GET"])
 @login_required
 def list_notes():
+   # catégorie sélectionnée depuis l'URL ?cat=moto
+   selected_cat = (request.args.get("cat") or "").strip().lower()
+
+   # 1) Récupération des notes
    q = Note.query.filter_by(user_id=current_user.id)
 
    if hasattr(Note, "start_at"):
@@ -19,9 +22,70 @@ def list_notes():
        q = q.order_by(Note.id.desc())
 
    notes = q.all()
- 
-   return render_template("notes/list.html", notes=notes, now=datetime.utcnow())
-   
+
+   # 2) Catégories (ta liste fixe)
+   categories = ["moto", "voiture", "enduro", "balade", "4x4", "campingcar", "bourse"]
+
+   # 3) Images catégories
+   image_map = {
+       "moto": "moto.jpg",
+       "voiture": "voiture.jpg",
+       "enduro": "enduro.jpg",
+       "balade": "balade.jpg",
+       "4x4": "4x4.jpg",
+       "campingcar": "campingcar.jpg",
+       "bourse": "bourse.jpg",
+   }
+
+   # 4) Textes panneau de droite
+   category_texts = {
+       "moto": "Tous les évènements à venir pour les passionnés de moto.",
+       "voiture": "Tous les évènements à venir pour les passionnés d'auto.",
+       "enduro": "Sorties et évènements enduro à venir.",
+       "balade": "Balades et rendez-vous à venir.",
+       "4x4": "Évènements tout-terrain et sorties 4x4 à venir.",
+       "campingcar": "Rassemblements et sorties camping-car à venir.",
+       "bourse": "Bourses, brocantes et évènements à venir.",
+   }
+
+   # 5) Filtre notes par catégorie
+   if selected_cat:
+       filtered_notes = [
+           n for n in notes
+           if (n.category or "").strip().lower() == selected_cat
+       ]
+   else:
+       filtered_notes = notes
+
+   # 6) 3 prochains évènements (si start_at existe)
+   now = datetime.utcnow()
+   events = []
+
+   if selected_cat and hasattr(Note, "start_at"):
+       events = [n for n in filtered_notes if n.start_at and n.start_at >= now]
+       events.sort(key=lambda n: n.start_at)
+       events = events[:3]
+
+   # 7) Compteurs par catégorie (optionnel, mais tu le passes déjà)
+   counts = {}
+   for cat in categories:
+       counts[cat] = sum(
+           1 for n in notes
+           if (n.category or "").strip().lower() == cat
+       )
+
+   return render_template(
+       "notes/list.html",
+       notes=notes,
+       filtered_notes=filtered_notes,
+       now=now,
+       categories=categories,
+       image_map=image_map,
+       category_texts=category_texts,
+       selected_cat=selected_cat,
+       events=events,
+       counts=counts,
+   )
 
 
 @bp.route("/create", methods=["GET", "POST"])

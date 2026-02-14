@@ -10,130 +10,70 @@
    </a>
  </div>
 
- {% set image_map = {
-   'voiture': 'voiture.jpg',
-   'moto': 'moto.jpg',
-   'enduro': 'enduro.jpg',
-   'campingcar': 'campingcar.jpg',
-   'balade': 'balade.jpg',
-   '4x4': '4x4.jpg',
-   'bourse': 'bourse.jpg'
- } %}
+ <div class="rr-layout">
 
- {% if filtered_notes and filtered_notes|length > 0 %}
-   <div class="rr-layout">
+   <!-- ===================== -->
+   <!-- COLONNE GAUCHE -->
+   <!-- ===================== -->
+   <div class="rr-left">
 
-     <!-- COLONNE GAUCHE -->
-     <div class="rr-left">
+     {% for note in notes %}
+       {% set cat = (note.category or "voiture")|lower|trim %}
+       <article class="rr-card category-{{ cat }}">
 
-       <!-- CATEGORIES -->
-       <div class="rr-grid">
+         <img class="rr-card-img"
+              src="{{ url_for('static', filename='img/' ~ cat ~ '.jpg') }}"
+              alt="{{ cat }}">
 
-         <a class="rr-cat-link {% if not selected_cat %}is-active{% endif %}"
-            href="{{ url_for('notes.list_notes') }}">
-           <article class="rr-card category-default">
-             <img class="rr-card-img"
-                  src="{{ url_for('static', filename='img/voiture.jpg') }}"
-                  alt="Toutes">
-             <div class="rr-card-overlay"></div>
-             <div class="rr-card-body">
-               <div class="rr-badge">Toutes</div>
-               <div class="rr-meta">Tous les évènements à venir</div>
-             </div>
-           </article>
-         </a>
+         <div class="rr-card-overlay"></div>
 
-         {% for cat in categories %}
-           {% set img = image_map.get(cat, "voiture.jpg") %}
-           <a class="rr-cat-link {% if selected_cat == cat %}is-active{% endif %}"
-              href="{{ url_for('notes.list_notes') }}?cat={{ cat }}">
-             <article class="rr-card category-{{ cat }}">
-               <img class="rr-card-img"
-                    src="{{ url_for('static', filename='img/' ~ img) }}"
-                    alt="{{ cat }}">
-               <div class="rr-card-overlay"></div>
-               <div class="rr-card-body">
-                 <div class="rr-badge">{{ cat|capitalize }}</div>
-                 <div class="rr-meta">{{ counts.get(cat, 0) }} évènement(s) à venir</div>
-               </div>
-             </article>
-           </a>
-         {% endfor %}
+         <div class="rr-card-body">
+           <div class="rr-badge">{{ cat|capitalize }}</div>
 
-       </div><!-- /rr-grid -->
+           <div class="rr-actions">
+             <a class="rr-btn rr-btn-edit"
+                href="{{ url_for('notes.edit_note', note_id=note.id) }}">
+                Modifier
+             </a>
 
-       <!-- GROSSES CARTES NOTES -->
-       <div class="rr-notes">
-         {% for note in filtered_notes %}
-           {% set cat = (note.category or "voiture")|lower|trim %}
-           <article class="rr-note-card">
-             <img class="rr-note-img"
-                  src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
-                  alt="{{ cat }}">
-
-             <div class="rr-note-badge">{{ cat|capitalize }}</div>
-
-             <div class="rr-note-actions">
-               <a class="rr-btn rr-btn-edit"
-                  href="{{ url_for('notes.edit_note', note_id=note.id) }}">Modifier</a>
-
-               <form class="rr-delete-form"
-                     method="post"
-                     action="{{ url_for('notes.delete_note', note_id=note.id) }}">
-                 <button class="rr-btn rr-btn-del" type="submit">Supprimer</button>
-               </form>
-             </div>
-           </article>
-         {% endfor %}
-       </div><!-- /rr-notes -->
-
-     </div><!-- /rr-left -->
-
-     <!-- COLONNE DROITE : affichée seulement si catégorie sélectionnée -->
-     {% if selected_cat %}
-       <aside class="rr-right">
-
-         <h2 class="rr-side-title">{{ selected_cat|capitalize }}</h2>
-         <p class="rr-side-desc">
-           {{ category_texts.get(selected_cat, "Tous les évènements à venir.") }}
-         </p>
-
-         <h3 class="rr-side-sub">Prochains évènements</h3>
-
-         {% if events and events|length > 0 %}
-           <div class="rr-events">
-             {% for note in events %}
-               {% set cat = (note.category or "voiture")|lower|trim %}
-               <article class="rr-event">
-                 <div class="rr-event-head">
-                   <div class="rr-badge">{{ cat|capitalize }}</div>
-                   <div class="rr-event-date">
-                     {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
-                   </div>
-                 </div>
-
-                 <h4 class="rr-event-title">{{ note.title }}</h4>
-
-                 {% if note.content %}
-                   <p class="rr-event-desc">
-                     {{ note.content[:160] }}{% if note.content|length > 160 %}…{% endif %}
-                   </p>
-                 {% endif %}
-               </article>
-             {% endfor %}
+             <form method="post"
+                   action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+               <button class="rr-btn rr-btn-del" type="submit">
+                 Supprimer
+               </button>
+             </form>
            </div>
-         {% else %}
-           <p class="rr-empty">Aucun évènement à venir pour cette catégorie.</p>
-         {% endif %}
+         </div>
 
-       </aside>
+       </article>
+     {% endfor %}
+
+   </div>
+
+   <!-- ===================== -->
+   <!-- COLONNE DROITE -->
+   <!-- ===================== -->
+   <aside class="rr-right">
+
+     {% if selected_cat %}
+       <h2 class="rr-side-title">{{ selected_cat|capitalize }}</h2>
+       <p class="rr-side-desc">
+         {{ category_texts.get(selected_cat, "") }}
+       </p>
+     {% else %}
+       <h2 class="rr-side-title">Choisis une catégorie</h2>
+       <p class="rr-side-desc">
+         Clique sur une carte à gauche.
+       </p>
      {% endif %}
 
-   </div><!-- /rr-layout -->
- {% else %}
-   <p class="rr-empty">Aucun évènement à venir.</p>
- {% endif %}
+     <h3 class="rr-side-sub">Prochains événements</h3>
 
-</div><!-- /container -->
-
-{% endblock %}
+     {% if events %}
+       {% for e in events %}
+         <div class="rr-event-box">
+           <strong>{{ e.title }}</strong><br>
+           {{ e.start_at.strftime("%d/%m/%Y") if e.start_at }}
+         </div>
+       {% endfor %}
+     {% else %}

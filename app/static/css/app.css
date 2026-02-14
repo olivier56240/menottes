@@ -1,10 +1,14 @@
 /* =========================
-  GLOBAL
+  GLOBAL RESET / BASE
 ========================= */
 *,
 *::before,
 *::after {
  box-sizing: border-box;
+}
+
+html, body {
+ height: 100%;
 }
 
 body {
@@ -13,120 +17,202 @@ body {
  background: #000;
  color: #fff;
  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+ max-width: 100%;
+ display: block;
 }
 
 a {
- color: #9fd3ff;
+ color: inherit;
  text-decoration: none;
 }
+
 a:hover {
- text-decoration: underline;
+ text-decoration: none;
 }
 
-
-
+/* Container générique si tu l’utilises ailleurs */
+.container {
+ width: 100%;
+}
 
 /* =========================
-  PAGE NOTES
+  NAVBAR (si tu as une navbar)
+  (safe: ne casse pas si non utilisée)
+========================= */
+.navbar,
+.nav {
+ background: rgba(0,0,0,0.35);
+ backdrop-filter: blur(10px);
+ border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.navbar a,
+.nav a {
+ color: rgba(255,255,255,0.92);
+}
+
+/* =========================
+  PAGE NOTES : WRAPPER
 ========================= */
 .rr-page {
  max-width: 1280px;
  margin: 0 auto;
- padding: 40px 20px 80px;
+ padding: 40px 20px 90px;
 }
 
 /* =========================
-  HEADER
+  HEADER (Titre + bouton)
 ========================= */
 .rr-header {
  display: flex;
  align-items: center;
  justify-content: space-between;
  gap: 16px;
- margin-bottom: 32px;
+ margin-bottom: 28px;
 }
 
 .rr-h1 {
  margin: 0;
  font-size: 38px;
  font-weight: 900;
- letter-spacing: 0.5px;
+ letter-spacing: .4px;
 }
 
-/* bouton ajouter */
+/* Bouton “Ajouter un évènement” */
 .rr-add {
  display: inline-flex;
  align-items: center;
  justify-content: center;
  padding: 12px 20px;
  border-radius: 14px;
- font-weight: 800;
+ font-weight: 900;
  color: #fff !important;
  background: linear-gradient(45deg, #ff3c00, #ff7a00);
  box-shadow: 0 10px 30px rgba(255, 60, 0, 0.35);
- transition: transform 0.25s ease, box-shadow 0.25s ease;
+ transition: transform .25s ease, box-shadow .25s ease;
+ white-space: nowrap;
 }
+
 .rr-add:hover {
  transform: translateY(-2px);
  box-shadow: 0 16px 45px rgba(255, 60, 0, 0.55);
 }
 
+/* =========================
+  LAYOUT GLOBAL (GAUCHE + DROITE)
+  -> Le “clean” que tu veux
+========================= */
+.rr-layout {
+ display: grid;
+ grid-template-columns: minmax(0, 1fr) 420px;
+ gap: 26px;
+ align-items: start;
+}
 
+/* Colonne gauche */
+.rr-left {
+ min-width: 0;
+ display: flex;
+ flex-direction: column;
+ gap: 22px;
+}
+
+/* Colonne droite sticky */
+.rr-right {
+ position: sticky;
+ top: 90px;
+ height: fit-content;
+
+ padding: 26px;
+ border-radius: 22px;
+ background: rgba(255,255,255,0.035);
+ border: 1px solid rgba(255,255,255,0.09);
+ box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+ backdrop-filter: blur(12px);
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+ .rr-layout {
+   grid-template-columns: 1fr;
+ }
+ .rr-right {
+   position: static;
+ }
+}
 
 /* =========================
-  CARD
+  GRILLE DES CATÉGORIES (cartes cliquables)
+========================= */
+.rr-grid {
+ display: grid;
+ grid-template-columns: repeat(2, minmax(0, 1fr));
+ gap: 18px;
+}
+
+@media (max-width: 620px) {
+ .rr-grid {
+   grid-template-columns: 1fr;
+ }
+}
+
+/* Lien catégorie */
+.rr-cat-link {
+ display: block;
+ border-radius: 20px;
+ outline: none;
+}
+
+.rr-cat-link.is-active .rr-card {
+ border-color: rgba(255,255,255,0.22);
+ box-shadow: 0 26px 90px rgba(0,0,0,0.85);
+ transform: translateY(-2px);
+}
+
+/* =========================
+  CARTE (Catégorie)
 ========================= */
 .rr-card {
  position: relative;
- aspect-ratio: 16 / 9;
+ height: 220px;               /* stable partout */
  border-radius: 20px;
  overflow: hidden;
- border: 1px solid rgba(255, 255, 255, 0.08);
- box-shadow: 0 18px 60px rgba(0, 0, 0, 0.65);
- transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* espace noir entre les cartes */
 
-
-
-
-
-  /* ratio “photo” sans aspect-ratio si tu préfères */
-
-  height: 320px;
+ border: 1px solid rgba(255,255,255,0.08);
+ box-shadow: 0 18px 60px rgba(0,0,0,0.65);
+ transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .rr-card:hover {
  transform: translateY(-6px);
- box-shadow: 0 26px 80px rgba(0, 0, 0, 0.9);
+ box-shadow: 0 26px 80px rgba(0,0,0,0.9);
 }
 
-
-.rr-card-img{
+/* Image full cover dans card */
+.rr-card-img {
  position: absolute;
  inset: 0;
  width: 100%;
  height: 100%;
- display: block;
- object-fit: cover;          /* <-- plein écran dans la card */
- object-position: center;    /* centré */
+ object-fit: cover;
+ object-position: center center;
 }
 
-/* overlay lisibilité */
-.rr-card-overlay{
+/* Overlay lisibilité */
+.rr-card-overlay {
  position: absolute;
  inset: 0;
- background: linear-gradient(
-   to top,
-   rgba(0,0,0,0.85),
-   rgba(0,0,0,0.25)
- );
+ background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.20));
  z-index: 1;
- pointer-events: none;       /* ✅ fix clic */
+ pointer-events: none;
 }
 
-
-
-/* contenu */
+/* Contenu bas de carte */
 .rr-card-body {
  position: relative;
  z-index: 2;
@@ -134,101 +220,129 @@ a:hover {
  display: flex;
  flex-direction: column;
  justify-content: flex-end;
- padding: 20px;
+ padding: 16px;
  gap: 10px;
 }
 
-/* ===============================
-  AJUSTEMENT IMAGE PAR CATÉGORIE
-  =============================== */
-
-/* Moto : on remonte (évite de couper la moto) */
-.category-moto .rr-card-img{
- object-position: center 60%;
-}
-
-/* Voiture : centrée classique */
-.category-voiture .rr-card-img{
- object-position: center center;
-}
-
-/* Balade (rando) : horizon plus haut */
-.category- .rr-card-img{
- object-position: center 35%;
-}
-
-/* 4x4 / enduro : bas visible */
-.category-4x4 .rr-card-img,
-.category-enduro .rr-card-img{
- object-position: center 70%;
-}
-
-/* fallback sécurité */
-.category-default .rr-card-img{
- object-position: center center;
-}
-
-/* =========================
-  CARD CONTENT
-========================= */
+/* Badge catégorie */
 .rr-badge {
  display: inline-flex;
  width: fit-content;
  padding: 6px 12px;
  border-radius: 999px;
- background: rgba(0, 0, 0, 0.6);
- border: 1px solid rgba(255, 255, 255, 0.15);
+ background: rgba(0, 0, 0, 0.55);
+ border: 1px solid rgba(255,255,255,0.15);
  font-size: 12px;
- font-weight: 800;
- letter-spacing: 0.4px;
-}
-
-.rr-title {
- margin: 0;
- font-size: 22px;
  font-weight: 900;
- line-height: 1.15;
+ letter-spacing: .3px;
 }
 
-.rr-desc {
- margin: 0;
- font-size: 14px;
- line-height: 1.35;
- color: rgba(255, 255, 255, 0.85);
- max-width: 50ch;
-}
-
+/* Meta en bas */
 .rr-meta {
  font-size: 12px;
- color: rgba(255, 255, 255, 0.75);
+ color: rgba(255,255,255,0.78);
 }
 
 /* =========================
-  ACTIONS
+  AJUSTEMENT IMAGE PAR CATÉGORIE
+  (si tu veux recadrer finement)
 ========================= */
-.rr-actions {
+.rr-card.category-moto .rr-card-img { object-position: center 60%; }
+.rr-card.category-voiture .rr-card-img { object-position: center center; }
+.rr-card.category-balade .rr-card-img { object-position: center 35%; }
+.rr-card.category-enduro .rr-card-img { object-position: center 55%; }
+.rr-card.category-4x4 .rr-card-img { object-position: center 55%; }
+.rr-card.category-campingcar .rr-card-img { object-position: center center; }
+.rr-card.category-bourse .rr-card-img { object-position: center center; }
+
+/* =========================
+  LISTE DES NOTES (grosses cartes)
+========================= */
+.rr-notes {
+ display: grid;
+ grid-template-columns: 1fr;
+ gap: 22px;
+}
+
+/* Carte note (grosse) */
+.rr-note-card {
+ position: relative;
+ height: 260px;
+ border-radius: 22px;
+ overflow: hidden;
+
+ border: 1px solid rgba(255,255,255,0.08);
+ box-shadow: 0 18px 60px rgba(0,0,0,0.65);
+}
+
+/* Image note */
+.rr-note-img {
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ object-position: center center;
+}
+
+/* Overlay note */
+.rr-note-card::after {
+ content: "";
+ position: absolute;
+ inset: 0;
+ background: linear-gradient(to top, rgba(0,0,0,0.86), rgba(0,0,0,0.18));
+ pointer-events: none;
+}
+
+/* Badge en haut gauche */
+.rr-note-badge {
+ position: absolute;
+ top: 16px;
+ left: 16px;
+ z-index: 2;
+
+ display: inline-flex;
+ padding: 8px 14px;
+ border-radius: 999px;
+ background: rgba(0,0,0,0.55);
+ border: 1px solid rgba(255,255,255,0.16);
+ font-weight: 900;
+ font-size: 13px;
+}
+
+/* Actions en bas gauche */
+.rr-note-actions {
+ position: absolute;
+ bottom: 16px;
+ left: 16px;
+ z-index: 2;
+
  display: flex;
  gap: 10px;
- margin-top: 8px;
  align-items: center;
 }
 
+/* =========================
+  BOUTONS
+========================= */
 .rr-btn {
  display: inline-flex;
  align-items: center;
  justify-content: center;
+
  padding: 10px 14px;
  border-radius: 12px;
  font-weight: 900;
  cursor: pointer;
  border: none;
  text-decoration: none;
+ line-height: 1;
 }
 
 .rr-btn-edit {
- background: rgba(255, 255, 255, 0.18);
+ background: rgba(255,255,255,0.18);
  color: #fff !important;
- border: 1px solid rgba(255, 255, 255, 0.22);
+ border: 1px solid rgba(255,255,255,0.22);
 }
 
 .rr-btn-del {
@@ -241,381 +355,148 @@ a:hover {
 }
 
 /* =========================
-  EMPTY STATE
+  SIDEBAR DROITE
 ========================= */
-.rr-empty {
- margin-top: 20px;
- padding: 30px;
- border-radius: 18px;
- background: rgba(255, 255, 255, 0.05);
- border: 1px solid rgba(255, 255, 255, 0.1);
+.rr-side-title {
+ margin: 0;
+ font-size: 34px;
+ font-weight: 950;
+ letter-spacing: .2px;
+}
+
+.rr-side-desc {
+ margin: 10px 0 18px;
+ color: rgba(255,255,255,0.82);
+ line-height: 1.4;
+}
+
+.rr-side-sep {
+ height: 1px;
+ width: 100%;
+ background: rgba(255,255,255,0.10);
+ margin: 18px 0;
+}
+
+.rr-side-sub {
+ margin: 0 0 14px;
+ font-size: 20px;
+ font-weight: 900;
+ color: rgba(255,255,255,0.92);
+}
+
+/* Events list */
+.rr-events {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+}
+
+/* Event card */
+.rr-event {
+ padding: 14px 14px;
+ border-radius: 16px;
+ background: rgba(255,255,255,0.04);
+ border: 1px solid rgba(255,255,255,0.09);
+}
+
+.rr-event-head {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 10px;
+ margin-bottom: 10px;
+}
+
+.rr-event-date {
+ font-size: 13px;
+ color: rgba(255,255,255,0.70);
+ font-weight: 700;
+}
+
+.rr-event-title {
+ margin: 0;
  font-size: 16px;
+ font-weight: 900;
+ color: rgba(255,255,255,0.92);
+}
+
+.rr-empty {
+ margin-top: 12px;
+ padding: 14px 16px;
+ border-radius: 16px;
+ background: rgba(255,255,255,0.04);
+ border: 1px solid rgba(255,255,255,0.09);
+ color: rgba(255,255,255,0.75);
 }
 
 /* =========================
-  FORMS (GLOBAL FIX)
+  FORMS (create/edit)
 ========================= */
-input,
-textarea,
-select {
- background: #fff;
- color: #000;
+form .form-group,
+.form-group {
+ margin-bottom: 14px;
+}
+
+label {
+ display: block;
+ margin-bottom: 6px;
+ font-weight: 800;
+ color: rgba(255,255,255,0.88);
+}
+
+input, textarea, select {
+ width: 100%;
+ padding: 12px 14px;
+ border-radius: 12px;
+ border: 1px solid rgba(255,255,255,0.14);
+ background: rgba(255,255,255,0.06);
+ color: #fff;
+ outline: none;
 }
 
 input::placeholder,
 textarea::placeholder {
- color: #666;
-}
-/* ===============================
-  MIX PRO : images entières selon catégorie
-  =============================== */
-
-/* Catégories où on veut voir TOUTE l'image (pas coupée) */
-.category-balade .rr-card-img,
-.category-4x4 .rr-card-img,
-.category-enduro .rr-card-img{
- object-fit: cover;         /* affiche l'image entière */
- object-position: center;
- background: #000;            /* bandes noires propres si besoin */
+ color: rgba(255,255,255,0.55);
 }
 
-/* Catégories où on garde le look premium (cover) */
-.category-voiture .rr-card-img,
-.category-moto .rr-card-img{ object-position: center 70%; }
-.category-campingcar .rr-card-img,
-.category-bourse .rr-card-img{
- object-fit: cover;           /* plein cadre */
- object-position: center;     /* tu peux ajuster si besoin */
-}
-/* ===== IMAGE POSITION FIX BY CATEGORY ===== */
-
-/* Par défaut */
-.rr-card-img {
- width: 100%;
- height: 100%;
- object-fit: cover;
- object-position: center center;
+input:focus, textarea:focus, select:focus {
+ border-color: rgba(255,255,255,0.26);
+ box-shadow: 0 0 0 4px rgba(255,255,255,0.06);
 }
 
-/* Balade → on monte l'image */
-.rr-card.category-balade .rr-card-img {
- object-position: center 10%;
+textarea {
+ min-height: 120px;
+ resize: vertical;
 }
 
-/* Enduro → on descend l'image */
-.rr-card.category-enduro .rr-card-img {
- object-position: center 40%;
-}
-/* FORCE le layout gauche + droite (comme la maquette) */
-.rr-layout{
- display: grid !important;
- grid-template-columns: minmax(0, 1fr) 420px !important;
- gap: 24px !important;
- align-items: start !important;
-}
-
-/* Colonne gauche */
-.rr-left{ min-width: 0; }
-
-/* Colonne droite sticky */
-.rr-right{
- position: sticky;
- top: 90px;
- height: fit-content;
-
- padding: 28px;
- border-radius: 22px;
-
- /* fond opaque réel */
- background: linear-gradient(
-   180deg,
-   rgba(25,25,28,0.98),
-   rgba(18,18,20,0.98)
- );
-
- border: 1px solid rgba(255,255,255,0.08);
- box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-
- backdrop-filter: none;   /* on enlève le blur */
-}
-
-/* Grille catégories (2 cartes par ligne) */
-.rr-grid{
- display: grid;
- grid-template-columns: repeat(2, minmax(0, 1fr));
- gap: 18px;
- margin-bottom: 18px;
-}
-
-/* Cartes notes en dessous */
-.rr-notes{
- display: grid;
- grid-template-columns: 1fr;
- gap: 18px;
-}
-
-/* Responsive : en mobile on repasse en 1 colonne */
-@media (max-width: 980px){
- .rr-layout{ grid-template-columns: 1fr !important; }
- .rr-right{ position: static; }
- .rr-grid{ grid-template-columns: 1fr; }
-}
-/* ===== RESET ANTI-OVERLAY (priorité max) ===== */
-.rr-layout{
- display: grid !important;
- grid-template-columns: minmax(0, 1fr) 420px !important;
- gap: 24px !important;
- align-items: start !important;
-}
-
-.rr-left{
- grid-column: 1 !important;
- min-width: 0 !important;
-}
-
-.rr-right{
- grid-column: 2 !important;
-
- /* annule toute règle cachée (absolute/inset/transform) */
- position: sticky !important;
- top: 90px !important;
- inset: auto !important;
- transform: none !important;
-
- width: auto !important;
- height: fit-content !important;
- margin: 0 !important;
- z-index: 0 !important;
-
- /* look panneau */
- padding: 22px !important;
- border-radius: 22px !important;
- background: rgba(255,255,255,0.06) !important;
- border: 1px solid rgba(255,255,255,0.10) !important;
- backdrop-filter: blur(10px) !important;
-}
-
-@media (max-width: 980px){
- .rr-layout{ grid-template-columns: 1fr !important; }
- .rr-right{ position: static !important; grid-column: 1 !important; }
-}
-/* ===== FINAL UI: grosses cartes notes + boutons ===== */
-
-.rr-notes{
- display: grid !important;
- grid-template-columns: 1fr !important;
- gap: 18px !important;
-}
-
-/* grosse carte (note) */
-.rr-note-card{
- position: relative;
- height: 320px;
- border-radius: 20px;
- overflow: hidden;
- border: 1px solid rgba(255,255,255,0.08);
- box-shadow: 0 18px 60px rgba(0,0,0,0.65);
-}
-
-/* image plein cadre */
-.rr-note-img{
- position: absolute;
- inset: 0;
- width: 100%;
- height: 100%;
- object-fit: cover;
- object-position: center;
- display: block;
-}
-
-/* overlay comme les catégories */
-.rr-note-card::after{
- content: "";
- position: absolute;
- inset: 0;
- background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.15));
- pointer-events: none;
-}
-
-/* badge catégorie */
-.rr-note-badge{
- position: absolute;
- top: 16px;
- left: 16px;
- z-index: 2;
- padding: 6px 12px;
- border-radius: 999px;
- background: rgba(0,0,0,0.6);
- border: 1px solid rgba(255,255,255,0.15);
- font-size: 12px;
- font-weight: 800;
-}
-
-/* actions en bas gauche */
-.rr-note-actions{
- position: absolute;
- left: 16px;
- bottom: 16px;
- z-index: 2;
- display: flex;
- gap: 10px;
- align-items: center;
-}
-
-/* boutons */
-.rr-btn{
- padding: 10px 14px;
- border-radius: 12px;
- font-weight: 900;
+/* Bouton submit générique */
+button[type="submit"],
+.btn,
+.button {
  border: none;
- text-decoration: none;
+ cursor: pointer;
 }
 
-.rr-btn-edit{
- background: rgba(255,255,255,0.18);
- color: #fff !important;
- border: 1px solid rgba(255,255,255,0.22);
-}
-
-.rr-btn-del{
- background: rgba(255,46,46,0.95);
- color: #fff !important;
-}
-
-.rr-delete-form{ margin: 0; }
 /* =========================
-  RR OVERRIDE (FINAL CLEAN)
-  à coller tout en bas du fichier
+  FLASH MESSAGES (safe)
 ========================= */
-
-/* layout 2 colonnes stable */
-.rr-layout{
- display: grid !important;
- grid-template-columns: minmax(0, 1fr) 420px !important;
- gap: 24px !important;
- align-items: start !important;
-}
-
-.rr-left{ min-width: 0 !important; }
-
-.rr-right{
- position: sticky !important;
- top: 90px !important;
- height: fit-content !important;
- border-radius: 18px;
- padding: 18px;
+.flash,
+.alert {
+ margin: 14px 0;
+ padding: 12px 14px;
+ border-radius: 14px;
+ border: 1px solid rgba(255,255,255,0.12);
  background: rgba(255,255,255,0.05);
- border: 1px solid rgba(255,255,255,0.10);
 }
 
-/* grille catégories: 2 par ligne */
-.rr-grid{
- display: grid !important;
- grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
- gap: 18px !important;
- margin-bottom: 18px !important;
+.flash.success,
+.alert-success {
+ border-color: rgba(0, 255, 120, 0.25);
+ background: rgba(0, 255, 120, 0.08);
 }
 
-/* cartes catégories */
-.rr-card{
- position: relative;
- height: 220px !important;
- border-radius: 20px;
- overflow: hidden;
- border: 1px solid rgba(255,255,255,0.08);
- box-shadow: 0 18px 60px rgba(0,0,0,0.65);
-}
-
-.rr-card-img{
- position: absolute;
- inset: 0;
- width: 100%;
- height: 100%;
- object-fit: cover;
- object-position: center;
- display: block;
-}
-
-.rr-card-overlay{
- position: absolute;
- inset: 0;
- background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.20));
- z-index: 1;
- pointer-events: none;
-}
-
-.rr-card-body{
- position: relative;
- z-index: 2;
- height: 100%;
- display: flex;
- flex-direction: column;
- justify-content: flex-end;
- padding: 16px;
- gap: 8px;
-}
-
-/* notes: grosses cartes 1 par ligne */
-.rr-notes{
- display: grid !important;
- grid-template-columns: 1fr !important;
- gap: 18px !important;
-}
-
-/* grosse carte note */
-.rr-note-card{
- position: relative;
- height: 320px !important;
- border-radius: 20px;
- overflow: hidden;
- border: 1px solid rgba(255,255,255,0.08);
- box-shadow: 0 18px 60px rgba(0,0,0,0.65);
-}
-
-.rr-note-img{
- position: absolute;
- inset: 0;
- width: 100%;
- height: 100%;
- object-fit: cover;
- object-position: center;
- display: block;
-}
-
-.rr-note-card::after{
- content: "";
- position: absolute;
- inset: 0;
- background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.15));
- pointer-events: none;
-}
-
-.rr-note-badge{
- position: absolute;
- top: 16px;
- left: 16px;
- z-index: 2;
- padding: 6px 12px;
- border-radius: 999px;
- background: rgba(0,0,0,0.6);
- border: 1px solid rgba(255,255,255,0.15);
- font-size: 12px;
- font-weight: 800;
-}
-
-.rr-note-actions{
- position: absolute;
- left: 16px;
- bottom: 16px;
- z-index: 2;
- display: flex;
- gap: 10px;
- align-items: center;
-}
-
-/* responsive */
-@media (max-width: 980px){
- .rr-layout{ grid-template-columns: 1fr !important; }
- .rr-right{ position: static !important; }
- .rr-grid{ grid-template-columns: 1fr !important; }
+.flash.error,
+.alert-danger {
+ border-color: rgba(255, 60, 60, 0.25);
+ background: rgba(255, 60, 60, 0.08);
 }

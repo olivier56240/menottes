@@ -74,6 +74,8 @@ def list_notes():
            if (n.category or "").strip().lower() == cat
        )
 
+
+
    return render_template(
        "notes/list.html",
        notes=notes,

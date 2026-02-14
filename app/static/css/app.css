@@ -558,3 +558,12 @@ button[type="submit"],
  gap: 10px;
  z-index: 2;
 }
+.rr-note-title{
+font-size: 18px;
+font-weight: 800;
+}
+
+.rr-note-date{
+font-size: 13px;
+opacity: .8;
+}

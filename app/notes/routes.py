@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
+from datetime import datetime
 
 from app.extensions import db
 from app.models.note import Note
@@ -14,8 +13,19 @@ from .forms import NoteForm
 def list_notes():
    selected_cat = (request.args.get("cat") or "").strip().lower()
 
+   # Notes de l'utilisateur
+   q = Note.query.filter_by(user_id=current_user.id)
+   if hasattr(Note, "start_at"):
+       q = q.order_by(Note.start_at.asc().nulls_last())
+   else:
+       q = q.order_by(Note.id.desc())
+
+   notes = q.all()
+
+   # Liste fixe des catégories
    categories = ["moto", "voiture", "enduro", "balade", "4x4", "campingcar", "bourse"]
 
+   # Images par catégorie
    image_map = {
        "moto": "moto.jpg",
        "voiture": "voiture.jpg",
@@ -26,6 +36,7 @@ def list_notes():
        "bourse": "bourse.jpg",
    }
 
+   # Texte panneau de droite
    category_texts = {
        "moto": "Tous les évènements à venir pour les passionnés de moto.",
        "voiture": "Tous les évènements à venir pour les passionnés d'auto.",
@@ -36,32 +47,23 @@ def list_notes():
        "bourse": "Bourses, brocantes et évènements à venir.",
    }
 
-   # Notes user
-   q = Note.query.filter_by(user_id=current_user.id)
-   if hasattr(Note, "start_at"):
-       q = q.order_by(Note.start_at.asc().nulls_last())
-   else:
-       q = q.order_by(Note.id.desc())
-   notes = q.all()
-
-   # Counts
-   counts = {}
-   for cat in categories:
-       counts[cat] = sum(1 for n in notes if (n.category or "").strip().lower() == cat)
-
-   # Filtered notes
+   # Filtrage par catégorie
    if selected_cat:
-       filtered_notes = [
-           n for n in notes if (n.category or "").strip().lower() == selected_cat
-       ]
+       filtered_notes = [n for n in notes if (n.category or "").strip().lower() == selected_cat]
    else:
        filtered_notes = notes
 
-   # Prochains évènements (3) pour la catégorie
+   # Compteurs par catégorie
+   counts = {
+       cat: sum(1 for n in notes if (n.category or "").strip().lower() == cat)
+       for cat in categories
+   }
+
+   # Events (3 prochains) uniquement si start_at existe
    now = datetime.utcnow()
    events = []
    if selected_cat and hasattr(Note, "start_at"):
-       events = [n for n in filtered_notes if n.start_at and n.start_at >= now]
+       events = [n for n in filtered_notes if getattr(n, "start_at", None) and n.start_at >= now]
        events.sort(key=lambda n: n.start_at)
        events = events[:3]
 
@@ -90,7 +92,7 @@ def create_note():
            category=(form.category.data or "voiture").strip().lower(),
            user_id=current_user.id,
            location=form.location.data.strip() if getattr(form, "location", None) and form.location.data else None,
-           start_at=form.start_at.data if getattr(form, "start_at", None) else None,
+           start_at=form.start_at.data if hasattr(form, "start_at") else None,
        )
        db.session.add(note)
        db.session.commit()

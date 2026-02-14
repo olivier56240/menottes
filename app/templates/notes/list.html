@@ -86,33 +86,37 @@
 
 
    <!-- COLONNE DROITE : seulement si catégorie sélectionnée -->
-   {% if selected_cat %}
-   <aside class="rr-right">
+  <aside class="rr-right">
 
-     <h2 class="rr-side-title">{{ selected_cat|capitalize }}</h2>
-     <p class="rr-side-desc">
-       {{ category_texts.get(selected_cat, "Tous les évènements à venir.") }}
-     </p>
+ {% if selected_cat %}
+   <h2 class="rr-side-title">{{ selected_cat|capitalize }}</h2>
+   <p class="rr-side-desc">
+     {{ category_texts.get(selected_cat, "Tous les évènements à venir.") }}
+   </p>
 
-     <h3 class="rr-side-sub">Prochains évènements</h3>
+   <h3 class="rr-side-sub">Prochains évènements</h3>
 
-     {% if events and events|length > 0 %}
-       <div class="rr-events">
-         {% for note in events %}
-           {% set cat = (note.category or "voiture")|lower|trim %}
-           <article class="rr-event">
-             <div class="rr-event-title">{{ note.title }}</div>
-             <div class="rr-event-date">
-               {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
-             </div>
-           </article>
-         {% endfor %}
-       </div>
-     {% else %}
-       <div class="rr-empty">Aucun évènement à venir pour cette catégorie.</div>
-     {% endif %}
+   {% if events and events|length > 0 %}
+     <div class="rr-events">
+       {% for note in events %}
+         <article class="rr-event">
+           <div class="rr-event-title">{{ note.title }}</div>
+           <div class="rr-event-date">
+             {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
+           </div>
+         </article>
+       {% endfor %}
+     </div>
+   {% else %}
+     <div class="rr-empty">Aucun évènement à venir pour cette catégorie.</div>
+   {% endif %}
 
-   </aside>
+ {% else %}
+   <h2 class="rr-side-title">Choisis une catégorie</h2>
+   <p class="rr-side-desc">Clique sur une carte à gauche pour afficher les évènements à venir.</p>
+ {% endif %}
+
+</aside>
    {% endif %}
 
  </div><!-- /rr-layout -->

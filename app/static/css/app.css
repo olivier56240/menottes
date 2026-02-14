@@ -322,6 +322,21 @@ textarea::placeholder {
  position: sticky;
  top: 90px;
  height: fit-content;
+
+ padding: 28px;
+ border-radius: 22px;
+
+ /* fond opaque réel */
+ background: linear-gradient(
+   180deg,
+   rgba(25,25,28,0.98),
+   rgba(18,18,20,0.98)
+ );
+
+ border: 1px solid rgba(255,255,255,0.08);
+ box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+
+ backdrop-filter: none;   /* on enlève le blur */
 }
 
 /* Grille catégories (2 cartes par ligne) */

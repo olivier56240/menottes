@@ -682,3 +682,39 @@ button[type="submit"],
  transform: translateY(-1px);
  box-shadow: 0 10px 28px rgba(0,0,0,.35);
 }
+.rr-note-card{
+ position: relative;
+}
+
+/* Texte (titre + date) */
+.rr-note-info{
+ position: absolute;
+ left: 16px;
+ bottom: 16px;
+ z-index: 2;
+ max-width: calc(100% - 220px); /* laisse la place aux boutons */
+}
+
+.rr-note-title{
+ margin: 0 0 6px 0;
+}
+
+.rr-note-date{
+ font-size: 14px;
+ opacity: .9;
+}
+
+/* Boutons */
+.rr-note-actions{
+ position: absolute;
+ right: 16px;
+ bottom: 16px;
+ z-index: 2;
+ display: flex;
+ gap: 10px;
+ align-items: center;
+}
+
+.rr-delete-form{
+ margin: 0;
+}

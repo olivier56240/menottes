@@ -18,6 +18,12 @@
      <a class="nav-link text-white" href="{{ url_for('notes.list_notes') }}">Rassemblements</a>
 
      {% if current_user.is_authenticated %}
+     {% if session.get("dept") %}
+<a class="nav-link text-warning fw-bold"
+  href="{{ url_for('main.map_index') }}">
+  📍 Dept {{ session.get("dept") }} 🔄
+</a>
+{% endif %}
        <a class="nav-link text-white" href="{{ url_for('activities.list_activities') }}">Activité</a>
        <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}">Logout</a>
      {% else %}

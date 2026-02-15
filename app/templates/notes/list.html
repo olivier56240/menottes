@@ -63,39 +63,42 @@
          {% for note in filtered_notes %}
            {% set cat = (note.category or "voiture")|lower|trim %}
 
-           <article class="rr-note-card">
+         <article class="rr-note-card">
+
  <img class="rr-note-img"
       src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
       alt="{{ cat }}">
 
  <div class="rr-note-overlay"></div>
 
- <div class="rr-note-badge">{{ cat|capitalize }}</div>
-
  <div class="rr-note-body">
-   <div class="rr-note-text">
+
+   <div class="rr-note-info">
      <div class="rr-note-title">{{ note.title }}</div>
+
      {% if note.start_at %}
-       <div class="rr-note-date">{{ note.start_at.strftime("%d/%m/%Y") }}</div>
+       <div class="rr-note-date">
+         {{ note.start_at.strftime("%d/%m/%Y") }}
+       </div>
      {% endif %}
    </div>
 
-   
-<div class="rr-note-info">
- <h3 class="rr-note-title">{{ note.title }}</h3>
- {% if note.start_at %}
-   <div class="rr-note-date">{{ note.start_at.strftime("%d/%m/%Y") }}</div>
- {% endif %}
-</div>
+   <div class="rr-note-actions">
+     <a class="rr-btn rr-btn-edit"
+        href="{{ url_for('notes.edit_note', note_id=note.id) }}">
+        Modifier
+     </a>
 
-<div class="rr-note-actions">
- <a class="rr-btn rr-btn-edit" href="{{ url_for('notes.edit_note', note_id=note.id) }}">Modifier</a>
+     <form class="rr-delete-form"
+           method="post"
+           action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+       {{ csrf_token() }}
+       <button class="rr-btn rr-btn-del" type="submit">
+         Supprimer
+       </button>
+     </form>
+   </div>
 
- <form class="rr-delete-form" method="post" action="{{ url_for('notes.delete_note', note_id=note.id) }}">
-   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-   <button class="rr-btn rr-btn-del" type="submit">Supprimer</button>
- </form>
-</div>
  </div>
 </article>
 

@@ -4,7 +4,8 @@ from wtforms import (
    TextAreaField,
    SelectField,
    DateTimeLocalField,
-   SubmitField   # ✅ AJOUT ICI
+   SubmitField,  # ✅ AJOUT ICI
+   HiddenField
 )
 from wtforms.validators import DataRequired, Optional, Length
 
@@ -19,10 +20,13 @@ CATEGORY_CHOICES = [
 ]
 
 class NoteForm(FlaskForm):
+
    title = StringField(
        "Nom du rassemblement",
        validators=[DataRequired(), Length(min=2, max=80)]
    )
+
+   dept_code = HiddenField()
 
    category = SelectField(
        "Catégorie",

@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, abort
+from flask import render_template, redirect, url_for, flash, request, abort, session
 from flask_login import login_required, current_user
 from datetime import datetime
 
@@ -11,16 +11,15 @@ from .forms import NoteForm
 @bp.route("/", methods=["GET"])
 @login_required
 def list_notes():
+   # Cat sélectionnée via ?cat=voiture (optionnel)
    selected_cat = (request.args.get("cat") or "").strip().lower()
+   if selected_cat in ("", "toutes", "all"):
+       selected_cat = ""
 
-   # Notes de l'utilisateur
-   q = Note.query.filter_by(user_id=current_user.id)
-   if hasattr(Note, "start_at"):
-       q = q.order_by(Note.start_at.asc().nulls_last())
-   else:
-       q = q.order_by(Note.id.desc())
-
-   notes = q.all()
+   # Département obligatoire (session["dept"])
+   dept = (session.get("dept") or "").strip()
+   if not dept:
+       return redirect(url_for("main.map_index"))
 
    # Liste fixe des catégories
    categories = ["moto", "voiture", "enduro", "balade", "4x4", "campingcar", "bourse"]
@@ -47,13 +46,40 @@ def list_notes():
        "bourse": "Bourses, brocantes et évènements à venir.",
    }
 
-   # Filtrage par catégorie
-   if selected_cat:
-       filtered_notes = [n for n in notes if (n.category or "").strip().lower() == selected_cat]
-   else:
-       filtered_notes = notes
+   # ----------------------------
+   # ✅ Query SQL : user + dept
+   # ----------------------------
+   q = Note.query.filter_by(user_id=current_user.id)
 
-   # Compteurs par catégorie
+   if hasattr(Note, "dept_code"):
+       q = q.filter(Note.dept_code == dept)
+
+   # ✅ Filtre catégorie en SQL (si choisie)
+   if selected_cat and hasattr(Note, "category"):
+       q = q.filter(Note.category == selected_cat)
+
+   # Tri
+   if hasattr(Note, "start_at"):
+       q = q.order_by(Note.start_at.asc().nulls_last())
+   else:
+       q = q.order_by(Note.id.desc())
+
+   filtered_notes = q.all()
+
+   # Pour l'affichage global (cartes / liste complète du dept)
+   # -> notes = toutes les notes du dept (sans filtre cat)
+   q_all = Note.query.filter_by(user_id=current_user.id)
+   if hasattr(Note, "dept_code"):
+       q_all = q_all.filter(Note.dept_code == dept)
+
+   if hasattr(Note, "start_at"):
+       q_all = q_all.order_by(Note.start_at.asc().nulls_last())
+   else:
+       q_all = q_all.order_by(Note.id.desc())
+
+   notes = q_all.all()
+
+   # Compteurs par catégorie (sur le dept)
    counts = {
        cat: sum(1 for n in notes if (n.category or "").strip().lower() == cat)
        for cat in categories
@@ -63,14 +89,17 @@ def list_notes():
    now = datetime.utcnow()
    events = []
    if selected_cat and hasattr(Note, "start_at"):
-       events = [n for n in filtered_notes if getattr(n, "start_at", None) and n.start_at >= now]
+       events = [
+           n for n in filtered_notes
+           if getattr(n, "start_at", None) and n.start_at >= now
+       ]
        events.sort(key=lambda n: n.start_at)
        events = events[:3]
 
    return render_template(
        "notes/list.html",
-       notes=notes,
-       filtered_notes=filtered_notes,
+       notes=notes,                      # toutes les notes du dept
+       filtered_notes=filtered_notes,    # notes du dept + filtre cat
        now=now,
        categories=categories,
        image_map=image_map,
@@ -78,6 +107,7 @@ def list_notes():
        selected_cat=selected_cat,
        events=events,
        counts=counts,
+       dept=dept,
    )
 
 
@@ -85,6 +115,10 @@ def list_notes():
 @login_required
 def create_note():
    form = NoteForm()
+
+   if request.method == "GET":
+       form.dept_code.data = session.get("dept", "")
+
    if form.validate_on_submit():
        note = Note(
            title=form.title.data.strip(),
@@ -94,6 +128,10 @@ def create_note():
            location=form.location.data.strip() if getattr(form, "location", None) and form.location.data else None,
            start_at=form.start_at.data if hasattr(form, "start_at") else None,
        )
+
+       # ✅ dept_code prioritaire depuis le form, sinon session
+       note.dept_code = (form.dept_code.data or session.get("dept") or "").strip()
+
        db.session.add(note)
        db.session.commit()
        flash("Rassemblement créé ✅", "success")
@@ -108,6 +146,9 @@ def edit_note(note_id):
    note = Note.query.filter_by(id=note_id, user_id=current_user.id).first_or_404()
    form = NoteForm(obj=note)
 
+   if request.method == "GET":
+       form.dept_code.data = session.get("dept", "") or getattr(note, "dept_code", "")
+
    if form.validate_on_submit():
        note.title = form.title.data.strip()
        note.content = form.content.data.strip()
@@ -118,6 +159,8 @@ def edit_note(note_id):
 
        if hasattr(form, "start_at") and hasattr(note, "start_at"):
            note.start_at = form.start_at.data
+
+       note.dept_code = (form.dept_code.data or session.get("dept") or note.dept_code or "").strip()
 
        db.session.commit()
        flash("Événement modifié ✅", "success")
@@ -132,7 +175,7 @@ def delete_note(note_id):
    note = Note.query.get_or_404(note_id)
 
    if note.user_id != current_user.id:
-     abort(403)
+       abort(403)
 
    db.session.delete(note)
    db.session.commit()

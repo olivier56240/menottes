@@ -11,3 +11,4 @@ class Note(db.Model):
    category = db.Column(db.String(30), nullable=False, default="voiture")
    location = db.Column(db.String(120), nullable=True)
    start_at = db.Column(db.DateTime, nullable=True)
+   dept_code = db.Column(db.String(3), nullable=True, index=True)  # 2 ou 3 chars (ex: "75", "971")

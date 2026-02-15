@@ -503,21 +503,13 @@ button[type="submit"],
 /* =========================
   NOTES (grosses cartes)
 ========================= */
-
-.rr-notes{
- display: grid;
- grid-template-columns: 1fr;
- gap: 18px;
- margin-top: 18px;
-}
-
 .rr-note-card{
  position: relative;
- border-radius: 20px;
+ border-radius: 22px;
  overflow: hidden;
  border: 1px solid rgba(255,255,255,.08);
  box-shadow: 0 18px 60px rgba(0,0,0,.65);
- height: 260px;
+ min-height: 260px;
 }
 
 .rr-note-img{
@@ -533,37 +525,160 @@ button[type="submit"],
 .rr-note-overlay{
  position: absolute;
  inset: 0;
- background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,.15));
- pointer-events: none;
+ background: linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,.12));
 }
 
 .rr-note-badge{
  position: absolute;
  top: 16px;
  left: 16px;
+ z-index: 3;
+
+ display: inline-flex;
+ width: fit-content;
  padding: 6px 12px;
  border-radius: 999px;
  background: rgba(0,0,0,.55);
  border: 1px solid rgba(255,255,255,.15);
  font-size: 12px;
  font-weight: 900;
- z-index: 2;
 }
 
-.rr-note-actions{
+.rr-note-body{
  position: absolute;
- left: 16px;
- bottom: 16px;
+ inset: 0;
+ z-index: 3;
+
  display: flex;
- gap: 10px;
- z-index: 2;
+ flex-direction: column;
+ justify-content: flex-end;
+ padding: 18px;
+ gap: 12px;
 }
+
+.rr-note-text{
+ display: flex;
+ flex-direction: column;
+ gap: 4px;
+}
+
 .rr-note-title{
-font-size: 18px;
-font-weight: 800;
+ font-weight: 900;
+ font-size: 18px;
+ line-height: 1.15;
+ text-shadow: 0 10px 30px rgba(0,0,0,.55);
 }
 
 .rr-note-date{
-font-size: 13px;
-opacity: .8;
+ opacity: .9;
+ font-weight: 700;
+ font-size: 13px;
+}
+
+.rr-note-actions{
+ display: flex;
+ gap: 10px;
+ align-items: center;
+}
+
+/* boutons */
+.rr-btn{
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ height: 34px;
+ padding: 0 14px;
+ border-radius: 10px;
+ font-weight: 900;
+ font-size: 13px;
+ border: 1px solid rgba(255,255,255,.14);
+ background: rgba(255,255,255,.10);
+ color: rgba(255,255,255,.95);
+ text-decoration: none;
+ backdrop-filter: blur(8px);
+}
+
+.rr-btn:hover{
+ background: rgba(255,255,255,.16);
+}
+
+.rr-btn-del{
+ background: rgba(255,70,70,.85);
+ border-color: rgba(255,70,70,.45);
+}
+
+.rr-btn-del:hover{
+ background: rgba(255,70,70,.95);
+}
+
+.rr-delete-form{
+ margin: 0;
+}
+/* =========================
+  EFFET PREMIUM (hover)
+========================= */
+
+/* Cartes catégories */
+.rr-card{
+ transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+
+.rr-card:hover{
+ transform: translateY(-6px);
+ border-color: rgba(255,255,255,.16);
+ box-shadow: 0 28px 90px rgba(0,0,0,.92);
+}
+
+.rr-card-img{
+ transition: transform .45s ease;
+}
+
+.rr-card:hover .rr-card-img{
+ transform: scale(1.05);
+}
+
+/* Cartes notes (grosses cartes) */
+.rr-note-card{
+ transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+
+.rr-note-card:hover{
+ transform: translateY(-4px);
+ border-color: rgba(255,255,255,.16);
+ box-shadow: 0 30px 95px rgba(0,0,0,.95);
+}
+
+/* zoom léger de l’image */
+.rr-note-img{
+ transition: transform .50s ease;
+}
+
+.rr-note-card:hover .rr-note-img{
+ transform: scale(1.06);
+}
+
+/* glow subtil (liseré) */
+.rr-note-card::before{
+ content:"";
+ position:absolute;
+ inset:0;
+ border-radius: 22px;
+ box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+ pointer-events:none;
+ opacity: .0;
+ transition: opacity .28s ease;
+}
+
+.rr-note-card:hover::before{
+ opacity: 1;
+}
+
+/* Boutons plus “premium” au hover */
+.rr-btn{
+ transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.rr-btn:hover{
+ transform: translateY(-1px);
+ box-shadow: 0 10px 28px rgba(0,0,0,.35);
 }

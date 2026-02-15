@@ -12,12 +12,15 @@ from .forms import NoteForm
 def list_notes():
    selected_cat = (request.args.get("cat") or "").strip().lower()
 
-   dept = (session.get("dept") or "").strip()
+   dept = session.get("dept")
    if not dept:
        return redirect(url_for("main.map_index"))
 
-   # Notes de l'utilisateur + DU département sélectionné
-   q = Note.query.filter_by(user_id=current_user.id, dept_code=dept)
+   # 🔥 Filtrage par utilisateur + département
+   q = Note.query.filter_by(
+       user_id=current_user.id,
+       dept_code=dept
+   )
 
    if hasattr(Note, "start_at"):
        q = q.order_by(Note.start_at.asc().nulls_last())

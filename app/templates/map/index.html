@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container rr-page">
+ <div class="rr-center">
+   <div class="rr-panel">
+     <h2 class="mb-3 text-center">Choisis ton département</h2>
+
+     <p class="text-muted text-center mb-4">
+       Sélectionne ton département pour voir les évènements de ta zone.
+     </p>
+
+     <form method="GET" action="{{ url_for('main.set_dept') }}" class="rr-form">
+       <label class="form-label">Département</label>
+
+       <select name="dept" class="form-select rr-input" required>
+         <option value="" selected disabled>— Choisir —</option>
+         {% for code, name in depts %}
+           <option value="{{ code }}" {% if current_dept == code %}selected{% endif %}>
+             {{ code }} — {{ name }}
+           </option>
+         {% endfor %}
+       </select>
+
+       <button class="rr-btn rr-btn-primary mt-3" type="submit">
+         Continuer
+       </button>
+     </form>
+
+   </div>
+ </div>
+</div>
+
+{% endblock %}

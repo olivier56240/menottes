@@ -7,24 +7,27 @@ from app.models.note import Note
 from . import bp
 from .forms import NoteForm
 
-
 @bp.route("/", methods=["GET"])
 @login_required
 def list_notes():
-   # Cat sélectionnée via ?cat=voiture (optionnel)
    selected_cat = (request.args.get("cat") or "").strip().lower()
-   if selected_cat in ("", "toutes", "all"):
-       selected_cat = ""
 
-   # Département obligatoire (session["dept"])
    dept = (session.get("dept") or "").strip()
    if not dept:
        return redirect(url_for("main.map_index"))
 
-   # Liste fixe des catégories
+   # Notes de l'utilisateur + DU département sélectionné
+   q = Note.query.filter_by(user_id=current_user.id, dept_code=dept)
+
+   if hasattr(Note, "start_at"):
+       q = q.order_by(Note.start_at.asc().nulls_last())
+   else:
+       q = q.order_by(Note.id.desc())
+
+   notes = q.all()
+
    categories = ["moto", "voiture", "enduro", "balade", "4x4", "campingcar", "bourse"]
 
-   # Images par catégorie
    image_map = {
        "moto": "moto.jpg",
        "voiture": "voiture.jpg",
@@ -35,7 +38,6 @@ def list_notes():
        "bourse": "bourse.jpg",
    }
 
-   # Texte panneau de droite
    category_texts = {
        "moto": "Tous les évènements à venir pour les passionnés de moto.",
        "voiture": "Tous les évènements à venir pour les passionnés d'auto.",
@@ -46,60 +48,27 @@ def list_notes():
        "bourse": "Bourses, brocantes et évènements à venir.",
    }
 
-   # ----------------------------
-   # ✅ Query SQL : user + dept
-   # ----------------------------
-   q = Note.query.filter_by(user_id=current_user.id)
-
-   if hasattr(Note, "dept_code"):
-       q = q.filter(Note.dept_code == dept)
-
-   # ✅ Filtre catégorie en SQL (si choisie)
-   if selected_cat and hasattr(Note, "category"):
-       q = q.filter(Note.category == selected_cat)
-
-   # Tri
-   if hasattr(Note, "start_at"):
-       q = q.order_by(Note.start_at.asc().nulls_last())
+   if selected_cat:
+       filtered_notes = [n for n in notes if (n.category or "").strip().lower() == selected_cat]
    else:
-       q = q.order_by(Note.id.desc())
+       filtered_notes = notes
 
-   filtered_notes = q.all()
-
-   # Pour l'affichage global (cartes / liste complète du dept)
-   # -> notes = toutes les notes du dept (sans filtre cat)
-   q_all = Note.query.filter_by(user_id=current_user.id)
-   if hasattr(Note, "dept_code"):
-       q_all = q_all.filter(Note.dept_code == dept)
-
-   if hasattr(Note, "start_at"):
-       q_all = q_all.order_by(Note.start_at.asc().nulls_last())
-   else:
-       q_all = q_all.order_by(Note.id.desc())
-
-   notes = q_all.all()
-
-   # Compteurs par catégorie (sur le dept)
    counts = {
        cat: sum(1 for n in notes if (n.category or "").strip().lower() == cat)
        for cat in categories
    }
 
-   # Events (3 prochains) uniquement si start_at existe
    now = datetime.utcnow()
    events = []
    if selected_cat and hasattr(Note, "start_at"):
-       events = [
-           n for n in filtered_notes
-           if getattr(n, "start_at", None) and n.start_at >= now
-       ]
+       events = [n for n in filtered_notes if getattr(n, "start_at", None) and n.start_at >= now]
        events.sort(key=lambda n: n.start_at)
        events = events[:3]
 
    return render_template(
        "notes/list.html",
-       notes=notes,                      # toutes les notes du dept
-       filtered_notes=filtered_notes,    # notes du dept + filtre cat
+       notes=notes,
+       filtered_notes=filtered_notes,
        now=now,
        categories=categories,
        image_map=image_map,

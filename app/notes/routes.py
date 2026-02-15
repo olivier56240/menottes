@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from flask_login import login_required, current_user
 from datetime import datetime
 
@@ -129,8 +129,12 @@ def edit_note(note_id):
 @bp.route("/<int:note_id>/delete", methods=["POST"])
 @login_required
 def delete_note(note_id):
-   note = Note.query.filter_by(id=note_id, user_id=current_user.id).first_or_404()
+   note = Note.query.get_or_404(note_id)
+
+   if note.user_id != current_user.id:
+     abort(403)
+
    db.session.delete(note)
    db.session.commit()
-   flash("Rassemblement supprimé 🗑️", "success")
+   flash("Évènement supprimé.")
    return redirect(url_for("notes.list_notes"))

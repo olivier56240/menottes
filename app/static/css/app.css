@@ -733,3 +733,21 @@ button[type="submit"],
 .rr-delete-form{
  margin: 0;
 }
+/* ====== Carte / départements ====== */
+.rr-map-card{
+ background: rgba(255,255,255,0.06);
+ border: 1px solid rgba(255,255,255,0.10);
+ border-radius: 18px;
+ padding: 24px;
+ backdrop-filter: blur(10px);
+}
+.rr-map-title{ margin: 0 0 6px 0; font-size: 36px; font-weight: 800; }
+.rr-map-subtitle{ margin: 0 0 18px 0; opacity: .85; }
+.rr-dept-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(70px,1fr)); gap:10px; }
+.rr-dept-btn{
+ display:inline-flex; justify-content:center; align-items:center;
+ padding:10px 12px; border-radius:12px; text-decoration:none; color:#fff;
+ background: rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.14);
+ transition: transform .12s ease, background .12s ease;
+}
+.rr-dept-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }

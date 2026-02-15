@@ -11,7 +11,7 @@ from sqlalchemy import inspect
 
 # ⚠️ IMPORTANT : remplace down_revision par la dernière révision de TON dossier versions/
 revision = "ensure_dept_code_01"
-down_revision = "<MET_ICI_LA_DERNIERE_REVISION_EXISTANTE>"
+down_revision = '9ffd7cdcdf29'
 branch_labels = None
 depends_on = None
 

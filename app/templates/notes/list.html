@@ -55,62 +55,100 @@
      </div><!-- /rr-grid -->
 
 
- <!-- GROSSES CARTES (notes) -->
-<div class="rr-notes">
+     <!-- GROSSES CARTES (notes) -->
+     <div class="rr-notes">
 
- {% if filtered_notes and filtered_notes|length > 0 %}
+       {% if filtered_notes and filtered_notes|length > 0 %}
 
-   {% for note in filtered_notes %}
-     {% set cat = (note.category or "voiture")|lower|trim %}
+         {% for note in filtered_notes %}
+           {% set cat = (note.category or "voiture")|lower|trim %}
 
-     <article class="rr-note-card">
+           <article class="rr-note-card">
 
-       <img class="rr-note-img"
-            src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
-            alt="{{ cat }}">
+             <img class="rr-note-img"
+                  src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
+                  alt="{{ cat }}">
 
-       <div class="rr-note-overlay"></div>
+             <div class="rr-note-overlay"></div>
 
-       <div class="rr-note-body">
+             <div class="rr-note-body">
 
-         <div class="rr-note-info">
-           <div class="rr-note-title">{{ note.title }}</div>
+               <div class="rr-note-info">
+                 <div class="rr-note-title">{{ note.title }}</div>
 
-           {% if note.start_at %}
-             <div class="rr-note-date">
-               {{ note.start_at.strftime("%d/%m/%Y") }}
+                 {% if note.start_at %}
+                   <div class="rr-note-date">
+                     {{ note.start_at.strftime("%d/%m/%Y") }}
+                   </div>
+                 {% endif %}
+               </div>
+
+               <div class="rr-note-actions">
+                 <a class="rr-btn rr-btn-edit"
+                    href="{{ url_for('notes.edit_note', note_id=note.id) }}">
+                   Modifier
+                 </a>
+
+                 <form class="rr-delete-form"
+                       method="post"
+                       action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                   <button class="rr-btn rr-btn-del" type="submit">Supprimer</button>
+                 </form>
+               </div>
+
              </div>
-           {% endif %}
-         </div>
+           </article>
 
-         <div class="rr-note-actions">
-           <a class="rr-btn rr-btn-edit"
-              href="{{ url_for('notes.edit_note', note_id=note.id) }}">
-             Modifier
-           </a>
+         {% endfor %}
 
-           <form class="rr-delete-form"
-                 method="post"
-                 action="{{ url_for('notes.delete_note', note_id=note.id) }}">
-             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-             <button class="rr-btn rr-btn-del" type="submit">Supprimer</button>
-           </form>
-         </div>
+       {% else %}
 
+         <p class="rr-empty">
+           Aucun évènement à venir{% if selected_cat %} pour cette catégorie{% endif %}.
+         </p>
+
+       {% endif %}
+
+     </div><!-- /rr-notes -->
+
+   </div><!-- /rr-left -->
+
+
+   <!-- COLONNE DROITE -->
+   {% if selected_cat %}
+   <aside class="rr-right">
+
+     <h2 class="rr-side-title">
+       {{ selected_cat|capitalize }}
+     </h2>
+
+     <p class="rr-side-desc">
+       {{ category_texts.get(selected_cat, "Tous les évènements à venir.") }}
+     </p>
+
+     <h3 class="rr-side-sub">Prochains évènements</h3>
+
+     {% if events and events|length > 0 %}
+
+       <div class="rr-events">
+         {% for note in events %}
+           <article class="rr-event">
+             <div class="rr-event-title">{{ note.title }}</div>
+             <div class="rr-event-date">
+               {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
+             </div>
+           </article>
+         {% endfor %}
        </div>
-     </article>
 
-   {% endfor %}
+     {% else %}
 
- {% else %}
+       <div class="rr-empty">
+         Aucun évènement à venir pour cette catégorie.
+       </div>
 
-   <p class="rr-empty">
-     Aucun évènement à venir
-     {% if selected_cat %} pour cette catégorie{% endif %}.
-   </p>
-
- {% endif %}
-
+     {% endif %}
 
    </aside>
    {% endif %}

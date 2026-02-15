@@ -79,8 +79,22 @@
      {% if note.start_at %}
        <div class="rr-note-date">
          {{ note.start_at.strftime("%d/%m/%Y") }}
-       </div>
-     {% endif %}
+{% if note.location %}
+ <div class="card-text rr-note-sub">
+   📍 {{ note.location }}
+ {% if note.dept_code %}
+ <div class="rr-badge-dept">
+   Dept {{ note.dept_code }}
+ </div>
+{% endif %}
+
+{% if note.content %}
+ <div class="card-text rr-note-desc">
+   {{ note.content|striptags|truncate(120) }}
+ </div>
+{% endif %}
+
+     
    </div>
 
    <div class="rr-note-actions">
@@ -104,10 +118,9 @@
 
        {% else %}
 
-         <p class="rr-empty">
-           Aucun évènement à venir
-           {% if selected_cat %} pour cette catégorie{% endif %}.
-         </p>
+         <p class="rr-empty card-text">
+ Aucun évènement à venir{% if selected_cat %} pour cette catégorie{% endif %}.
+</p>
 
        {% endif %}
 
@@ -149,9 +162,10 @@
 
      {% else %}
 
-       <div class="rr-empty">
-         Aucun évènement à venir pour cette catégorie.
-       </div>
+      
+<p class="rr-empty card-text">
+ Aucun évènement à venir pour cette catégorie.
+</p>
 
      {% endif %}
 

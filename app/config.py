@@ -3,7 +3,7 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class DevConfig:
-   SECRET_KEY = "dev"
+   SECRET_KEY = os.environ.get("SECRET_KEY", "dev")
 
    db_url = os.environ.get("DATABASE_URL")
 

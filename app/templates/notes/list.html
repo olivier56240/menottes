@@ -88,15 +88,13 @@
         href="{{ url_for('notes.edit_note', note_id=note.id) }}">
         Modifier
      </a>
-
-     <form class="rr-delete-form"
-           method="post"
-           action="{{ url_for('notes.delete_note', note_id=note.id) }}">
-       {{ csrf_token() }}
-       <button class="rr-btn rr-btn-del" type="submit">
-         Supprimer
-       </button>
-     </form>
+<form class="rr-delete-form"
+     method="post"
+     action="{{ url_for('notes.delete_note', note_id=note.id) }}">
+ <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+ <button class="rr-btn rr-btn-del" type="submit">Supprimer</button>
+</form>
+     
    </div>
 
  </div>

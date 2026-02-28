@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import (
    StringField,
    TextAreaField,
@@ -49,4 +50,9 @@ class NoteForm(FlaskForm):
        format="%Y-%m-%dT%H:%M",
        validators=[Optional()]
    )
+   cover = FileField(
+        "Photo de l'événement",
+        validators=[FileAllowed(["jpg", "jpeg", "png", "webp"])]
+)
+
    submit = SubmitField("Publier")

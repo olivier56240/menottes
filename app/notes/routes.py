@@ -87,7 +87,7 @@ def list_notes():
 @login_required
 def create_note():
    form = NoteForm()
-  
+
    if request.method == "GET":
        form.dept_code.data = session.get("dept", "")
 
@@ -97,14 +97,19 @@ def create_note():
            content=form.content.data.strip(),
            category=(form.category.data or "voiture").strip().lower(),
            user_id=current_user.id,
-           location=form.location.data.strip() if getattr(form, "location", None) and form.location.data else None,
+           location=form.location.data.strip() if getattr(form, "location", None) else None,
            start_at=form.start_at.data if hasattr(form, "start_at") else None,
-  
        )
 
-   if getattr(form, "cover", None) and form.cover.data:
-       note.cover_url = upload_image(form.cover.data, folder="rassoride/events")
-       # ✅ dept_code prioritaire depuis le form, sinon session
+       # Photo cover (optionnelle)
+       if getattr(form, "cover", None) and form.cover.data:
+           url = upload_image(form.cover.data, folder="rassoride/events")
+           if url:
+               note.cover_url = url
+           else:
+               flash("Photo non envoyée (Cloudinary non configuré).", "warning")
+
+       # Dept code (TOUJOURS, même sans photo)
        note.dept_code = (form.dept_code.data or session.get("dept") or "").strip()
 
        db.session.add(note)

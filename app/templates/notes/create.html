@@ -4,7 +4,7 @@
 <div class="rr-center">
  <div class="rr-panel">
    <h2 class="mb-4 text-center">Créer un rassemblement</h2>
-<form method="POST" enctype="multipart/form-data"></form>
+<form method="POST" enctype="multipart/form-data">
      {{ form.hidden_tag() }}
      {{ form.dept_code() }} 
 <div class="rr-field">
@@ -50,7 +50,7 @@
      </div>
 
      <div class="d-flex gap-2">
-       {{ form.submit(class="btn btn-danger") }}
+      <button type="submit" class="btn btn-danger">Publier</button>
        <a class="btn btn-secondary" href="{{ url_for('notes.list_notes') }}">Retour</a>
      </div>
    </form>

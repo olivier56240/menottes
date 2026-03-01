@@ -12,6 +12,7 @@ def init_cloudinary():
    )
 
 def upload_image(file_storage, folder: str, public_id: str | None = None) -> str:
+   init_cloudinary()
    """
    Upload un fichier (Werkzeug FileStorage) sur Cloudinary et retourne l'URL secure.
    """

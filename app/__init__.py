@@ -26,5 +26,5 @@ def create_app():
    app.register_blueprint(notes_bp)
    app.register_blueprint(activities_bp)
    app.register_blueprint(main_bp)
-
+   init_cloudinary()
    return app

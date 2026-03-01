@@ -70,8 +70,9 @@
  <img class="rr-note-img" src="{{ note.cover_url }}" alt="Photo de l'évènement" loading="lazy">
 {% else %}
  <img class="rr-note-img"
-      src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
-      alt="{{ cat }}">
+    src="{{ note.cover_url if note.cover_url else url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
+    alt="{{ note.title }}"
+    loading="lazy">
 {% endif %}
 
              <div class="rr-note-overlay"></div>
@@ -120,47 +121,51 @@
    </div><!-- /rr-left -->
 
 
-   <!-- COLONNE DROITE -->
-   {% if selected_cat %}
-   <aside class="rr-right">
+ <!-- COLONNE DROITE -->
+{% if selected_cat %}
+<aside class="rr-right">
 
-     <h2 class="rr-side-title">
-       {{ selected_cat|capitalize }}
-     </h2>
+ <h2 class="rr-side-title">
+   {{ selected_cat|capitalize }}
+ </h2>
 
-     <p class="rr-side-desc">
-       {{ category_texts.get(selected_cat, "Tous les évènements à venir.") }}
-     </p>
+ <p class="rr-side-desc">
+   {{ category_texts.get(selected_cat, "Tous les évènements à venir.") }}
+ </p>
 
-     <h3 class="rr-side-sub">Prochains évènements</h3>
+ <h3 class="rr-side-sub">Prochains évènements</h3>
 
-     {% if events and events|length > 0 %}
+ {% if events and events|length > 0 %}
 
-       <div class="rr-events">
-         {% for note in events %}
-         <a class="rr-event" href="{{ url_for('notes.edit_note', note_id=note.id) }}">
- {% if note.cover_url %}
-   <img class="rr-event-img" src="{{ note.cover_url }}" alt="Photo" loading="lazy">
+   <div class="rr-events">
+     {% for note in events %}
+       <a class="rr-event" href="{{ url_for('notes.edit_note', note_id=note.id) }}">
+
+         {% if note.cover_url %}
+           <img class="rr-event-img" src="{{ note.cover_url }}" alt="Photo" loading="lazy">
+         {% endif %}
+
+         <div class="rr-event-text">
+           <div class="rr-event-title">{{ note.title }}</div>
+           <div class="rr-event-date">
+             {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
+           </div>
+         </div>
+
+       </a>
+     {% endfor %}
+   </div>
+
+ {% else %}
+
+   <div class="rr-empty">
+     Aucun évènement à venir pour cette catégorie.
+   </div>
+
  {% endif %}
 
- <div class="rr-event-text">
-   <div class="rr-event-title">{{ note.title }}</div>
-   <div class="rr-event-date">
-     {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
-   </div>
- </div>
-</a>
-
-     {% else %}
-
-       <div class="rr-empty">
-         Aucun évènement à venir pour cette catégorie.
-       </div>
-
-     {% endif %}
-
-   </aside>
-   {% endif %}
+</aside>
+{% endif %}
 
  </div><!-- /rr-layout -->
 

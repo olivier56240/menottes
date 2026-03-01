@@ -4,10 +4,17 @@
 <div class="rr-center">
  <div class="rr-panel">
    <h2 class="mb-4 text-center">Créer un rassemblement</h2>
-
-   <form method="POST">
+<form method="POST" enctype="multipart/form-data"></form>
      {{ form.hidden_tag() }}
      {{ form.dept_code() }} 
+<div class="rr-field">
+ {{ form.cover.label }}
+ {{ form.cover(class="rr-input") }}
+ {% for err in form.cover.errors %}
+   <div class="rr-error">{{ err }}</div>
+ {% endfor %}
+</div>
+
      <div class="mb-3">
        {{ form.title.label(class="form-label") }}
        {{ form.title(class="form-control rr-input", placeholder="Ex: Voiture - balade dimanche") }}

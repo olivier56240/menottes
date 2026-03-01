@@ -7,6 +7,7 @@ class User(UserMixin, db.Model):
    id = db.Column(db.Integer, primary_key=True)
    email = db.Column(db.String(255), unique=True, nullable=False, index=True)
    password_hash = db.Column(db.String(255), nullable=False)
+   avatar_url = db.Column(db.String(500), nullable=True)
 
    # Relation: un user -> plusieurs notes
    notes = db.relationship(

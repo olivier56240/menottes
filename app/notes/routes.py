@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request, abort, session
 from flask_login import login_required, current_user
 from datetime import datetime
-
+from app.services.cloudinary_service import upload_image
 from app.extensions import db
 from app.models.note import Note
 from . import bp
@@ -87,7 +87,7 @@ def list_notes():
 @login_required
 def create_note():
    form = NoteForm()
-
+  
    if request.method == "GET":
        form.dept_code.data = session.get("dept", "")
 
@@ -99,8 +99,11 @@ def create_note():
            user_id=current_user.id,
            location=form.location.data.strip() if getattr(form, "location", None) and form.location.data else None,
            start_at=form.start_at.data if hasattr(form, "start_at") else None,
+  
        )
 
+   if getattr(form, "cover", None) and form.cover.data:
+       note.cover_url = upload_image(form.cover.data, folder="rassoride/events")
        # ✅ dept_code prioritaire depuis le form, sinon session
        note.dept_code = (form.dept_code.data or session.get("dept") or "").strip()
 

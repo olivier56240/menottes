@@ -1,6 +1,8 @@
 from flask import Flask
 from .config import DevConfig
 from .extensions import db, migrate, login_manager, csrf
+from app.services.cloudinary_service import init_cloudinary
+
 
 def create_app():
    app = Flask(__name__, template_folder="templates", static_folder="static")

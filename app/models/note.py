@@ -12,4 +12,4 @@ class Note(db.Model):
    location = db.Column(db.String(120), nullable=True)
    start_at = db.Column(db.DateTime, nullable=True)
    dept_code = db.Column(db.String(3), nullable=True, index=True)  # 2 ou 3 chars (ex: "75", "971")
-   cover_url = db.Column(db.String(500))
+   cover_url = db.Column(db.String(500), nullable=True)

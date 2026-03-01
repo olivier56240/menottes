@@ -755,3 +755,20 @@ rr-badge-dept {
  font-size: 12px;
  opacity: 0.7;
 }
+.rr-event{
+ display:flex;
+ gap:10px;
+ align-items:center;
+ text-decoration:none;
+ color:inherit;
+}
+
+.rr-event-img{
+ width:44px;
+ height:44px;
+ border-radius:10px;
+ object-fit:cover;
+ display:block;
+}
+
+.rr-event-text{ display:flex; flex-direction:column; }

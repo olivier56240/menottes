@@ -65,9 +65,14 @@
 
            <article class="rr-note-card">
 
-             <img class="rr-note-img"
-                  src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
-                  alt="{{ cat }}">
+            
+{% if note.cover_url %}
+ <img class="rr-note-img" src="{{ note.cover_url }}" alt="Photo de l'évènement" loading="lazy">
+{% else %}
+ <img class="rr-note-img"
+      src="{{ url_for('static', filename='img/' ~ image_map.get(cat, 'voiture.jpg')) }}"
+      alt="{{ cat }}">
+{% endif %}
 
              <div class="rr-note-overlay"></div>
 
@@ -133,14 +138,18 @@
 
        <div class="rr-events">
          {% for note in events %}
-           <article class="rr-event">
-             <div class="rr-event-title">{{ note.title }}</div>
-             <div class="rr-event-date">
-               {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
-             </div>
-           </article>
-         {% endfor %}
-       </div>
+         <a class="rr-event" href="{{ url_for('notes.edit_note', note_id=note.id) }}">
+ {% if note.cover_url %}
+   <img class="rr-event-img" src="{{ note.cover_url }}" alt="Photo" loading="lazy">
+ {% endif %}
+
+ <div class="rr-event-text">
+   <div class="rr-event-title">{{ note.title }}</div>
+   <div class="rr-event-date">
+     {{ note.start_at.strftime("%d/%m/%Y") if note.start_at else "" }}
+   </div>
+ </div>
+</a>
 
      {% else %}
 

@@ -772,3 +772,45 @@ rr-badge-dept {
 }
 
 .rr-event-text{ display:flex; flex-direction:column; }
+.rr-detail-card{
+ max-width: 900px;
+ margin: 30px auto;
+ background: #111;
+ border-radius: 18px;
+ overflow: hidden;
+ box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+.rr-detail-img{
+ width: 100%;
+ height: 380px;
+ object-fit: cover;
+ display: block;
+}
+
+.rr-detail-body{
+ padding: 24px;
+}
+
+.rr-detail-title{
+ font-size: 32px;
+ margin: 12px 0 18px;
+}
+
+.rr-detail-meta{
+ margin-bottom: 10px;
+ font-size: 16px;
+ opacity: .9;
+}
+
+.rr-detail-content{
+ margin-top: 20px;
+ line-height: 1.6;
+ font-size: 16px;
+}
+
+.rr-detail-actions{
+ display: flex;
+ gap: 12px;
+ margin-top: 24px;
+}

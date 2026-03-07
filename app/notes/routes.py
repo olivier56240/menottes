@@ -6,6 +6,7 @@ from app.extensions import db
 from app.models.note import Note
 from . import bp
 from .forms import NoteForm
+from app.models.participant import Participant
 
 @bp.route("/", methods=["GET"])
 @login_required
@@ -148,7 +149,27 @@ def edit_note(note_id):
 
    return render_template("notes/edit.html", form=form, note=note)
 
+@bp.route("/<int:note_id>")
+def view_note(note_id):
+   note = Note.query.get_or_404(note_id)
 
+   participants = Participant.query.filter_by(note_id=note.id).all()
+   participant_count = len(participants)
+
+   is_participant = False
+   if current_user.is_authenticated:
+       is_participant = Participant.query.filter_by(
+           user_id=current_user.id,
+           note_id=note.id
+       ).first() is not None
+
+   return render_template(
+       "notes/detail.html",
+       note=note,
+       participants=participants,
+       participant_count=participant_count,
+       is_participant=is_participant,
+   )
 @bp.route("/<int:note_id>/delete", methods=["POST"])
 @login_required
 def delete_note(note_id):
@@ -161,3 +182,41 @@ def delete_note(note_id):
    db.session.commit()
    flash("Évènement supprimé.")
    return redirect(url_for("notes.list_notes"))
+
+@bp.route("/<int:note_id>/join", methods=["POST"])
+@login_required
+def join_note(note_id):
+   note = Note.query.get_or_404(note_id)
+
+   existing = Participant.query.filter_by(
+       user_id=current_user.id,
+       note_id=note.id
+   ).first()
+
+   if not existing:
+       participant = Participant(user_id=current_user.id, note_id=note.id)
+       db.session.add(participant)
+       db.session.commit()
+       flash("Tu participes à cet événement ✅", "success")
+   else:
+       flash("Tu participes déjà à cet événement.", "info")
+
+   return redirect(url_for("notes.view_note", note_id=note.id))
+
+
+@bp.route("/<int:note_id>/leave", methods=["POST"])
+@login_required
+def leave_note(note_id):
+   note = Note.query.get_or_404(note_id)
+
+   existing = Participant.query.filter_by(
+       user_id=current_user.id,
+       note_id=note.id
+   ).first()
+
+   if existing:
+       db.session.delete(existing)
+       db.session.commit()
+       flash("Tu ne participes plus à cet événement.", "info")
+
+   return redirect(url_for("notes.view_note", note_id=note.id))

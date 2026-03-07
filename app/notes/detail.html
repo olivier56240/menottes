@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container rr-page">
+
+ <div class="rr-detail-card">
+
+   {% if note.cover_url %}
+     <img class="rr-detail-img" src="{{ note.cover_url }}" alt="{{ note.title }}">
+   {% else %}
+ <img class="rr-detail-img"
+      src="{{ url_for('static', filename='img/voiture.jpg') }}"
+      alt="{{ note.title }}">
+{% endif %}
+
+   <div class="rr-detail-body">
+     <div class="rr-badge">{{ (note.category or "voiture")|capitalize }}</div>
+
+     <h1 class="rr-detail-title">{{ note.title }}</h1>
+     <div class="rr-detail-meta">
+👥 {{ participant_count }} participant{{ "s" if participant_count > 1 else "" }}
+</div>
+
+{% if current_user.is_authenticated %}
+<div class="rr-detail-actions">
+
+{% if is_participant %}
+<form method="POST" action="{{ url_for('notes.leave_note', note_id=note.id) }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="rr-btn rr-btn-del" type="submit">
+Je ne participe plus
+</button>
+</form>
+
+{% else %}
+
+<form method="POST" action="{{ url_for('notes.join_note', note_id=note.id) }}">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="rr-btn rr-btn-edit" type="submit">
+Je participe
+</button>
+</form>
+
+{% endif %}
+
+</div>
+{% endif %}
+{% if participants and participants|length > 0 %}
+ <div class="rr-detail-participants">
+   <h3>Participants</h3>
+   <ul>
+     {% for p in participants %}
+       <li>Utilisateur #{{ p.user_id }}</li>
+     {% endfor %}
+   </ul>
+ </div>
+{% endif %}
+     {% if note.start_at %}
+       <div class="rr-detail-meta">
+         📅 {{ note.start_at.strftime("%d/%m/%Y à %H:%M") }}
+       </div>
+     {% endif %}
+
+     {% if note.location %}
+       <div class="rr-detail-meta">
+         📍 {{ note.location }}
+       </div>
+     {% endif %}
+
+     {% if note.dept_code %}
+       <div class="rr-detail-meta">
+         Département : {{ note.dept_code }}
+       </div>
+     {% endif %}
+
+     {% if note.content %}
+       <div class="rr-detail-content">
+         {{ note.content }}
+       </div>
+     {% endif %}
+
+     <div class="rr-detail-actions">
+       <a class="rr-btn rr-btn-edit" href="{{ url_for('notes.list_notes') }}">
+         Retour
+       </a>
+
+       {% if current_user.is_authenticated and current_user.id == note.user_id %}
+         <a class="rr-btn rr-btn-edit" href="{{ url_for('notes.edit_note', note_id=note.id) }}">
+           Modifier
+         </a>
+       {% endif %}
+     </div>
+   </div>
+
+ </div>
+
+</div>
+
+{% endblock %}
